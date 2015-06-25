@@ -2,29 +2,32 @@
 <html lang="en">
 
 <head>
-	<title>Angular Material - Starter App</title>
+	<title>Bens Shows</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="">
-	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, show-scalable=no" />
 
 	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="./bower_components/angular-material/angular-material.css" />
 	<link rel="stylesheet" href="assets/app.css" />
 </head>
 
-<body ng-app="starterApp" layout="row" ng-controller="UserController as ul">
+<body ng-app="starterApp" layout="row" ng-controller="ShowController as ul">
 
 	<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
 
 		<md-toolbar class="md-whiteframe-z1">
-			<h1>Users</h1>
+			<h1>Shows</h1>
 		</md-toolbar>
 
 		<md-list>
-			<md-list-item ng-repeat="it in ul.users">
-				<md-button ng-click="ul.selectUser(it)" ng-class="{'selected' : it === ul.selected }">
-					<md-icon md-svg-icon="{{it.avatar}}" class="avatar"></md-icon>
+			<md-list-item ng-repeat="it in ul.shows">
+				<md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }">
+					<div class="avatar">
+						<img ng-src="{{it.imageUrl}}" class="img-center" />
+					</div>
 					{{it.name}}
 				</md-button>
 			</md-list-item>
@@ -36,18 +39,22 @@
 	<div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
 
 		<md-toolbar layout="row" class="md-whiteframe-z1">
-			<md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show User List">
+			<md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show Show List">
 				<md-icon md-svg-icon="menu"></md-icon>
 			</md-button>
-			<h1>Angular Material - Starter App</h1>
+			<h1>Bens Shows</h1>
 		</md-toolbar>
 
 		<md-content flex id="content">
-			<md-icon md-svg-icon="{{ul.selected.avatar}}" class="avatar"></md-icon>
+<!--			<md-icon md-svg-icon="{{ul.selected.avatar}}" class="avatar"></md-icon>-->
+			<div class="form-pic" layout="column" layout-align="center center">
+				<img ng-src="{{ul.selected.imageUrl}}" class="img-center" />
+			</div>
 			<h2>{{ul.selected.name}}</h2>
-			<p>{{ul.selected.content}}</p>
+			<p>Episodes: {{ul.selected.episodes}}</p>
+			<p ng-hide="ul.selected.next == -1">Next: {{ul.selected.next}}</p>
 
-			<md-button class="contact" md-no-ink ng-click="ul.showContactOptions($event)" aria-label="Contact User">
+			<md-button class="contact" md-no-ink ng-click="ul.showContactOptions($event)" aria-label="Contact Show">
 				<md-tooltip>Contact {{ ul.selected.name }}</md-tooltip>
 				<md-icon md-svg-icon="share"></md-icon>
 			</md-button>
@@ -60,17 +67,20 @@
 	<script src="./bower_components/angular-aria/angular-aria.js"></script>
 	<script type="text/javascript" src="./bower_components/angular-material/angular-material.js"></script>
 
-	<script src="./src/users/Users.js"></script>
-	<script src="./src/users/UserController.js"></script>
-	<script src="./src/users/UserService.js"></script>
+	<script src="./src/shows/Shows.js"></script>
+	<script src="./src/shows/ShowController.js"></script>
+	<script src="./src/shows/ShowService.js"></script>
 
 	<script type="text/javascript">
 		angular
-			.module('starterApp', ['ngMaterial', 'users'])
+			.module('starterApp', ['ngMaterial', 'shows'])
 			.config(function ($mdThemingProvider, $mdIconProvider) {
 
 				$mdIconProvider
 					.defaultIconSet("./assets/svg/avatars.svg", 128)
+					.icon("one-piece", "./assets/svg/one-piece.svg", 1000)
+					.icon("naruto", "./assets/svg/naruto.svg", 600)
+					.icon("naruto-shippuden", "./assets/svg/naruto-shippuden.svg", 600)
 					.icon("menu", "./assets/svg/menu.svg", 24)
 					.icon("share", "./assets/svg/share.svg", 24)
 					.icon("google_plus", "./assets/svg/google_plus.svg", 512)
@@ -79,8 +89,8 @@
 					.icon("phone", "./assets/svg/phone.svg", 512);
 
 				$mdThemingProvider.theme('default')
-					.primaryPalette('brown')
-					.accentPalette('red');
+					.primaryPalette('blue-grey')
+					.accentPalette('blue');
 			});
 	</script>
 
