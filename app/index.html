@@ -11,7 +11,7 @@
 	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="./bower_components/angular-material/angular-material.css" />
-	<link rel="stylesheet" href="assets/app.css" />
+	<link rel="stylesheet" href="assets/css/app.css" />
 </head>
 
 <body ng-app="starterApp" layout="row" ng-controller="ShowController as ul">
@@ -25,14 +25,11 @@
 		<md-list>
 			<md-list-item ng-repeat="it in ul.shows">
 				<md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }">
-					<div class="avatar">
-						<img ng-src="{{it.imageUrl}}" class="img-center" />
-					</div>
+                    <show-image image="{{it.image}}" class="avatar-sidebar"></show-image>
 					{{it.name}}
 				</md-button>
 			</md-list-item>
 		</md-list>
-
 	</md-sidenav>
 
 
@@ -47,9 +44,7 @@
 
 		<md-content flex id="content">
 <!--			<md-icon md-svg-icon="{{ul.selected.avatar}}" class="avatar"></md-icon>-->
-			<div class="form-pic" layout="column" layout-align="center center">
-				<img ng-src="{{ul.selected.imageUrl}}" class="img-center" />
-			</div>
+            <show-image image="{{ul.selected.image}}" class="avatar"></show-image>
 			<h2>{{ul.selected.name}}</h2>
 			<p>Episodes: {{ul.selected.episodes}}</p>
 			<p ng-hide="ul.selected.next == -1">Next: {{ul.selected.next}}</p>
@@ -70,6 +65,7 @@
 	<script src="./src/shows/Shows.js"></script>
 	<script src="./src/shows/ShowController.js"></script>
 	<script src="./src/shows/ShowService.js"></script>
+    <script src="./src/shows/ShowImageDirective.js"></script>
 
 	<script type="text/javascript">
 		angular
