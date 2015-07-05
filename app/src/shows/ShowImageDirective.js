@@ -4,25 +4,31 @@
     // Prepare the 'shows' module for subsequent registration of controllers and delegates
     angular.module('shows')
     .directive('showImage', function ShowImageDirective() {
+        
+        var getImageHtml = function(img, classes) {
+            if (!!img.imageUrl)
+            {
+                return '<img src="' + img.imageUrl + '" class="' + classes + '">';
+            }
+            else
+            {
+                return '<md-icon class="' + classes + '">' + (img.iconName || 'movie') + '</md-icon>';
+            }  
+        };
+        
+        var updateImage = function(img, classes, element) {
+            img = img || {};
+            element.outerHTML = getImageHtml(img);
+        };
+        
         return {
             restrict: 'E',
             scope: {
-                image: '@',
-                class: '@'
+                image: '=',
+                containerClass: '@',
+                imageClass: '@'
             },
-            link: function (scope, element, attrs) {
-                var img = JSON.parse(scope.image || '{}');
-                var showImageHtml = '';
-                if (!!img.imageUrl)
-                {
-                    showImageHtml = '<img src="' + img.imageUrl + '" class="' + scope.class + '">';
-                }
-                else
-                {
-                    showImageHtml = '<md-icon class="' + scope.class + '">' + (img.iconName || 'movie') + '</md-icon>';
-                }
-                element[0].outerHTML = showImageHtml;
-            }
+            templateUrl:'./src/shows/templates/show-image-template.html'
         };
     });
 })();
