@@ -1,0 +1,181 @@
+/*
+Author: Ben Brown
+Description: This file contains the styles for my shows app
+ */
+
+// Helpers
+
+@mixin zoom($scale) {
+    zoom: $scale;
+    -webkit-transform: scale($scale);
+    -moz-transform: scale($scale);
+}
+@mixin square($dimension) {
+    height: $dimension;
+    width: $dimension;
+}
+/******** Main styles ********/
+
+html,
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+.menu {
+    background-color: transparent;
+    border: none;
+    height: 38px;
+    margin: 16px;
+    width: 36px;
+}
+md-list {
+    .md-button {
+        color: inherit;
+        font-weight: 500;
+        text-align: left;
+        width: 100%;
+    }
+    .md-button.selected {
+        color: #03a9f4;
+    }
+}
+md-sidenav md-list {
+    padding: 0px 0px 8px 0px;
+}
+md-toolbar h1 {
+    margin: auto;
+    font-size: 1.250em;
+    font-weight: 400;
+}
+md-bottom-sheet md-icon {
+    margin-right: 20px;
+}
+span.name {
+    font-weight: bold;
+    font-size: 1.1em;
+    padding-left: 5px;
+}
+/******** Body/Content Styles ********/
+
+#content {
+    overflow: hidden;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 5px;
+    //    img {
+    //        display: block;
+    //        height: auto;
+    //        max-width: 500px;
+    //    }
+    .md-button.contact {
+        @include square(48px);
+        background-color: transparent;
+        border: none;
+        margin: 8px auto 16px 0;
+        position: absolute;
+        top: 10px;
+        right: 40px;
+        & > md-icon {
+            fill: black;
+            width: 36px;
+            height: 36px;
+        }
+        &:active > md-icon {
+            background-color: #dadada;
+            border-radius: 75%;
+            padding: 4px;
+            transition: all 100ms ease-out 30ms;
+        }
+    }
+    md-input-container {
+        padding-right: 10px;
+    }
+}
+md-button.menuBtn > md-icon {
+    @include square(24px);
+    fill: white;
+}
+.content-wrapper {
+    position: relative;
+}
+.width {
+    &-15 {
+        width: 15%;
+    }
+    &-33 {
+        width: 33%;
+    }
+    &-50 {
+        width: 50%;
+    }
+    &-75 {
+        width: 75%;
+    }
+}
+/******** Header/Avatar Styles ********/
+
+.avatar-container {
+    @include square(128px);
+    line-height: 128px;
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+    margin: 0px;
+    vertical-align: middle;
+    transform: translateZ(0);
+    text-align: center;
+}
+.avatar-sidebar-container {
+    @extend .avatar-container;
+    @include zoom(0.70);
+}
+.header {
+    height: 128px;
+    line-height: 128px;
+    margin-bottom: 20px;
+    &-text {
+        padding-left: 30px;
+        font-size: 2.5em;
+        margin: auto 0;
+    }
+    * {
+        display: inline-block;
+    }
+}
+/******** Material Icon Styles ********/
+
+.material-icons {
+    &.md-18 {
+        font-size: 18px;
+    }
+    &.md-24 {
+        font-size: 24px;
+    }
+    &.md-36 {
+        font-size: 36px;
+    }
+    &.md-48 {
+        font-size: 48px;
+    }
+    &.md-60 {
+        font-size: 60px;
+    }
+    &.md-72 {
+        font-size: 72px;
+    }
+    &.md-84 {
+        font-size: 84px;
+    }
+    &.md-dark {
+        color: rgba(0, 0, 0, 0.80);
+    }
+    &.md-center {
+        vertical-align: middle;
+        line-height: normal;
+    }
+}

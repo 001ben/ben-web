@@ -1,56 +1,96 @@
 (function () {
 	'use strict';
 
-	angular.module('shows')
-		.service('showService', ['$q', ShowService]);
+	angular.module('shows').service('showService', ['$q', ShowService]);
 
-	/**
-	 * Shows DataService
-	 * Uses embedded, hard-coded data model; acts asynchronously to simulate
-	 * remote data service call(s).
-	 *
-	 * @returns {{loadAll: Function}}
-	 * @constructor
-	 */
 	function ShowService($q) {
 		var shows = [
 			{
 				name: 'One Piece',
-				imageUrl: './assets/show-images/one-piece.svg',
-				episodes: 699,
-				next: 700
-      },
+				image: {
+					imageUrl: './assets/show-images/one-piece.svg',
+					style: {
+						zoom: '12%',
+						position: 'relative',
+						left: '-17%'
+					}
+				},
+				notes: 'This is my main show, I love it. Released on sunday\'s a bit after midday',
+				episodes: 700,
+				next: 701
+			},
 			{
 				name: 'Naruto',
-				imageUrl: './assets/show-images/naruto.svg',
+				image: {
+					imageUrl: './assets/show-images/naruto.svg',
+					style: {
+						zoom: '11%',
+						position: 'relative',
+						top: '18%'
+					}
+				},
 				episodes: 220,
 				next: -1
-      },
+			},
 			{
 				name: 'Naruto Shippuden',
-				imageUrl: './assets/show-images/naruto-shippuden.svg',
+				image: {
+					imageUrl: './assets/show-images/naruto-shippuden.svg',
+					style: {
+						zoom: '11%',
+						position: 'relative',
+						top: '18%'
+					}
+				},
 				episodes: 417,
 				next: 418
-      },
+			},
 			{
 				name: 'Tokyo Ghoul',
-				imageUrl: 'svg-4',
+				image: {
+					imageUrl: 'http://pre01.deviantart.net/ec16/th/pre/f/2014/226/5/5/touka_kirishima__tokyo_ghoul____render_v1_by_azizkeybackspace-d7v7l2o.png',
+					style: {
+						zoom: '20%'
+					}
+				},
 				episodes: 12,
 				next: -1
 			},
 			{
 				name: 'Tokyo Ghoul root A',
-				imageUrl: 'svg-5',
+				image: {
+					imageUrl: 'http://imgs.tuts.dragoart.com/how-to-draw-kaneki-ken-from-tokyo-ghoul_3_000000020971_5.png',
+					style: {
+						zoom: '11%',
+						position: 'relative',
+						left: '-6%',
+						top: '-6%'
+					}
+				},
 				episodes: 12,
 				next: -1
+			},
+			{
+				name: 'Game of Thrones',
+				image: {
+					imageUrl: 'http://images.tvrage.com/news/game-of-thrones-new-teaser-promises-chaos-for-season-3.png',
+					style: {
+						zoom: '20%',
+						position: 'relative',
+						left: '-34%'
+					},
+				},
+				seasons: 5,
+				seasonEpisodes: 12,
+				next: 'Season 6'
 			},
 			{
 				name: 'Attack on Titan',
 				imageUrl: 'svg-5',
 				episodes: 25,
 				next: 22
-			}
-		];
+				}
+			];
 
 		// Promise-based API
 		return {
@@ -60,5 +100,4 @@
 			}
 		};
 	}
-
 })();
