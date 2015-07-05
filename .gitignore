@@ -6,4 +6,4 @@ tmp
 .DS_Store
 .idea
 app/jspm_packages
-.sass-cache/
+**/.sass-cache/*
