@@ -17,8 +17,8 @@
 			{
 				name: 'One Piece',
 				imageUrl: './assets/show-images/one-piece.svg',
-				episodes: 698,
-				next: 699
+				episodes: 699,
+				next: 700
       },
 			{
 				name: 'Naruto',
@@ -29,8 +29,8 @@
 			{
 				name: 'Naruto Shippuden',
 				imageUrl: './assets/show-images/naruto-shippuden.svg',
-				episodes: 416,
-				next: 411
+				episodes: 417,
+				next: 418
       },
 			{
 				name: 'Tokyo Ghoul',
@@ -43,6 +43,12 @@
 				imageUrl: 'svg-5',
 				episodes: 12,
 				next: -1
+			},
+			{
+				name: 'Attack on Titan',
+				imageUrl: 'svg-5',
+				episodes: 25,
+				next: 22
 			}
 		];
 
