@@ -48,7 +48,7 @@
 			{
 				name: 'Tokyo Ghoul',
 				image: {
-					imageUrl: 'http://pre01.deviantart.net/ec16/th/pre/f/2014/226/5/5/touka_kirishima__tokyo_ghoul____render_v1_by_azizkeybackspace-d7v7l2o.png',
+					imageUrl: './assets/show-images/touka.png',
 					style: {
 						zoom: '20%'
 					}
@@ -59,7 +59,7 @@
 			{
 				name: 'Tokyo Ghoul root A',
 				image: {
-					imageUrl: 'http://imgs.tuts.dragoart.com/how-to-draw-kaneki-ken-from-tokyo-ghoul_3_000000020971_5.png',
+					imageUrl: './assets/show-images/kaneki-face.png',
 					style: {
 						zoom: '11%',
 						position: 'relative',
@@ -73,7 +73,7 @@
 			{
 				name: 'Game of Thrones',
 				image: {
-					imageUrl: 'http://images.tvrage.com/news/game-of-thrones-new-teaser-promises-chaos-for-season-3.png',
+					imageUrl: './assets/show-images/tyrion-face.png',
 					style: {
 						zoom: '20%',
 						position: 'relative',
