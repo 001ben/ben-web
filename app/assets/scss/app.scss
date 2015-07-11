@@ -134,6 +134,9 @@ md-button.menuBtn > md-icon {
     @extend .avatar-container;
     @include zoom(0.70);
 }
+md-icon.avatar-icon-container {
+    @include square(128px);
+}
 .header {
     height: 128px;
     line-height: 128px;

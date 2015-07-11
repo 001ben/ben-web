@@ -106,6 +106,10 @@ md-button.menuBtn > md-icon {
   -webkit-transform: scale(0.7);
   -moz-transform: scale(0.7); }
 
+md-icon.avatar-icon-container {
+  height: 128px;
+  width: 128px; }
+
 .header {
   height: 128px;
   line-height: 128px;
