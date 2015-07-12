@@ -15,13 +15,13 @@
 </head>
 
 <body ng-app="starterApp" layout="row" ng-controller="ShowController as ul">
-    <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+    <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" ng-cloak>
         <md-toolbar class="md-whiteframe-z1">
             <h1>Shows</h1>
         </md-toolbar>
 
         <md-list>
-            <md-list-item ng-repeat="it in ul.shows">
+            <md-list-item ng-repeat="it in ul.shows" ng-cloak>
                 <md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }">
                     <show-image image="it.image" container-class="avatar-sidebar-container" image-class="avatar"></show-image>
                     {{it.name}}
@@ -30,7 +30,7 @@
         </md-list>
     </md-sidenav>
 
-    <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
+    <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2" ng-cloak>
         <md-toolbar layout="row" class="md-whiteframe-z1">
             <md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show Show List">
                 <md-icon md-svg-icon="menu"></md-icon>

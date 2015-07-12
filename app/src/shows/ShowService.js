@@ -48,9 +48,9 @@
 			{
 				name: 'Tokyo Ghoul',
 				image: {
-					imageUrl: './assets/show-images/touka.png',
-					style: {
-						zoom: '20%'
+					imageUrl: './assets/show-images/touka-small.png'
+					,style: {
+                        zoom: '80%'
 					}
 				},
 				episodes: 12,
@@ -59,11 +59,11 @@
 			{
 				name: 'Tokyo Ghoul root A',
 				image: {
-					imageUrl: './assets/show-images/kaneki-face.png',
+					imageUrl: './assets/show-images/kaneki-small.png',
 					style: {
-						zoom: '11%',
+						zoom: '60%',
 						position: 'relative',
-						left: '-6%',
+						left: '-3%',
 						top: '-6%'
 					}
 				},
@@ -73,11 +73,9 @@
 			{
 				name: 'Game of Thrones',
 				image: {
-					imageUrl: './assets/show-images/tyrion-face.png',
+					imageUrl: './assets/show-images/tyrion-small.png',
 					style: {
-						zoom: '20%',
-						position: 'relative',
-						left: '-34%'
+						zoom: '58%'
 					},
 				},
 				seasons: 5,
@@ -88,7 +86,7 @@
 				name: 'Attack on Titan',
 				imageUrl: 'svg-5',
 				episodes: 25,
-				next: 22
+				next: -1
 				}
 			];
 

@@ -1,8 +1,8 @@
 (function () {
 
-    angular.module('shows').controller('ShowController', ['showService', '$mdSidenav', '$mdBottomSheet', '$log', '$q', ShowController]);
+    angular.module('shows').controller('ShowController', ['showService', '$mdSidenav', '$log', '$q', ShowController]);
 
-    function ShowController(showService, $mdSidenav, $mdBottomSheet, $log, $q) {
+    function ShowController(showService, $mdSidenav, $log, $q) {
         var self = this;
 
         self.selected = null;
