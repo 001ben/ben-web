@@ -7,4 +7,4 @@ tmp
 .idea
 app/jspm_packages
 **/.sass-cache/*
-*.map
+**/*.map
