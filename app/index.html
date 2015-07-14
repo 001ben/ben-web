@@ -23,7 +23,9 @@
         <md-list>
             <md-list-item ng-repeat="it in ul.shows" ng-cloak>
                 <md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }">
-                    <show-image image="it.image" container-class="avatar-sidebar-container" image-class="avatar"></show-image>
+                    <div class="avatar-sidebar-container">
+                        <div ng-style="it.image | extendDefault:'show-image'"></div>
+                    </div>
                     {{it.name}}
                 </md-button>
             </md-list-item>
@@ -40,7 +42,9 @@
 
         <md-content flex layout-padding id="content">
             <div layout="row" class="header">
-                <show-image image="ul.selected.image" container-class="avatar-container" image-class="avatar"></show-image>
+                <div class="avatar-container">
+                    <div ng-style="ul.selected.image | extendDefault:'show-image'"></div>
+                </div>
                 <h2 class="header-text">{{ul.selected.name}}</h2>
             </div>
             <div layout layout-sm="column" ng-hide="!ul.selected.seasons">
@@ -73,20 +77,21 @@
 
     </div>
 
-    <script src="./bower_components/angular/angular.js"></script>
-    <script src="./bower_components/angular-animate/angular-animate.js"></script>
-    <script src="./bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script type="text/javascript" src="./bower_components/angular-material/angular-material.js"></script>
 
-    <script src="./src/shows/Shows.js"></script>
-    <script src="./src/shows/ShowController.js"></script>
-    <script src="./src/shows/ShowService.js"></script>
-    <script src="./src/shows/ShowImageDirective.js"></script>
+    <script src="src/shows/Shows.js"></script>
+    <script src="src/shows/ShowController.js"></script>
+    <script src="src/shows/ShowService.js"></script>
+    <script src="src/shows/extend-default-filter.js"></script>
 
     <script type="text/javascript">
         angular
             .module('starterApp', ['ngMaterial', 'shows'])
-            .config(function ($mdThemingProvider, $mdIconProvider) {
+            .config(function ($mdThemingProvider, $mdIconProvider, extendDefaultObjectsProvider) {
 
                 $mdIconProvider
                     .defaultIconSet("./assets/svg/avatars.svg", 128)
@@ -103,6 +108,12 @@
                 $mdThemingProvider.theme('default')
                     .primaryPalette('blue-grey')
                     .accentPalette('blue');
+
+                extendDefaultObjectsProvider.objectFor('show-image', {
+                    'background-size': 'cover',
+                    'background-position': '50% 50%',
+                    'background-repeat': 'no-repeat'
+                });
             });
     </script>
 

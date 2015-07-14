@@ -54,6 +54,8 @@ span.name {
   #content .md-button.contact {
     height: 48px;
     width: 48px;
+    min-height: 48px;
+    min-width: 48px;
     background-color: transparent;
     border: none;
     margin: 8px auto 16px 0;
@@ -75,10 +77,17 @@ span.name {
 md-button.menuBtn > md-icon {
   height: 24px;
   width: 24px;
+  min-height: 24px;
+  min-width: 24px;
   fill: white; }
 
 .content-wrapper {
   position: relative; }
+
+md-list {
+  overflow: scroll; }
+  md-list::-webkit-scrollbar {
+    display: none; }
 
 .width-15 {
   width: 15%; }
@@ -93,9 +102,11 @@ md-button.menuBtn > md-icon {
 .avatar-container, .avatar-sidebar-container {
   height: 128px;
   width: 128px;
+  min-height: 128px;
+  min-width: 128px;
   line-height: 128px;
   position: relative;
-  border: 1px solid #ddd;
+  border: 1px solid #d8d8d8;
   border-radius: 50%;
   display: inline-block;
   overflow: hidden;
@@ -103,15 +114,15 @@ md-button.menuBtn > md-icon {
   vertical-align: middle;
   transform: translateZ(0);
   text-align: center; }
+  .avatar-container > div, .avatar-sidebar-container > div {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%; }
 
 .avatar-sidebar-container {
   zoom: 0.7;
   -webkit-transform: scale(0.7);
   -moz-transform: scale(0.7); }
-
-md-icon.avatar-icon-container {
-  height: 128px;
-  width: 128px; }
 
 .header {
   height: 128px;
