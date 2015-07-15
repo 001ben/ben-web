@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    angular.module('shows').service('showService', ['$q', ShowService]);
+    angular.module('shows').service('showService', ['$q', 'showType', ShowService]);
 
-    function ShowService($q) {
+    function ShowService($q, showType) {
         var shows = [
             {
                 name: 'One Piece',
@@ -12,7 +12,8 @@
                 },
                 notes: 'This is my main show, I love it. Released on sunday\'s a bit after midday',
                 episodes: 700,
-                next: 701
+                next: 701,
+                filmType: showType.episodes
             },
             {
                 name: 'Naruto',
@@ -21,7 +22,8 @@
                     'background-size': '80% 80%'
                 },
                 episodes: 220,
-                next: -1
+                watched: true,
+                filmType: showType.episodes
             },
             {
                 name: 'Naruto Shippuden',
@@ -30,7 +32,9 @@
                     'background-size': '80% 80%'
                 },
                 episodes: 417,
-                next: 418
+                next: 418,
+                watched: false,
+                filmType: showType.episodes
             },
             {
                 name: 'Tokyo Ghoul',
@@ -40,15 +44,17 @@
                     'background-position': '-10% 10%'
                 },
                 episodes: 12,
-                next: -1
+                watched: true,
+                filmType: showType.episodes
             },
             {
-                name: 'Tokyo Ghoul root A',
+                name: 'Tokyo Ghoul root A is a very long',
                 image: {
                     'background-image': 'url(./assets/show-images/kaneki-small.png)'
                 },
                 episodes: 12,
-                next: -1
+                watched: true,
+                filmType: showType.episodes
             },
             {
                 name: 'Game of Thrones',
@@ -58,7 +64,9 @@
                 },
                 seasons: 5,
                 seasonEpisodes: 12,
-                next: 'Season 6'
+                watched: false,
+                next: 'Season 6',
+                filmType: showType.seasons
             },
             {
                 name: 'Attack on Titan',
@@ -68,7 +76,17 @@
                     'background-size': '200% 125%'
                 },
                 episodes: 25,
-                next: -1
+                watched: true,
+                filmType: showType.episodes
+            },
+            {
+                name: 'Breaking Bad',
+                image: {
+                    'background-image': 'url(https://upload.wikimedia.org/wikipedia/en/6/61/Breaking_Bad_title_card.png)'
+                },
+                episodes: 25,
+                watched: true,
+                filmType: showType.seasons
             }
        ];
 

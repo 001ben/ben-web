@@ -26,6 +26,13 @@ describe('my app', function () {
             shows.selectShow(2);
             expect(details.currentShowName()).not.toEqual(name);
         });
+    });
 
+    describe('toggling a show as complete', function () {
+
+        it('should hide the "next" input', function () {
+            shows.selectShow(0);
+            var val = 
+        });
     });
 });

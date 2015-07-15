@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, show-scalable=no" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width" />
 
     <link rel="stylesheet" href="assets/css/app.css" />
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">
@@ -16,8 +16,8 @@
 
 <body ng-app="starterApp" layout="row" ng-controller="ShowController as ul">
     <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" ng-cloak>
-        <md-toolbar class="md-whiteframe-z1">
-            <h1>Shows</h1>
+        <md-toolbar layout="row" class="md-whiteframe-z1">
+            <h1 flex="33" offset="33">Shows</h1>
         </md-toolbar>
 
         <md-list>
@@ -34,41 +34,44 @@
 
     <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2" ng-cloak>
         <md-toolbar layout="row" class="md-whiteframe-z1">
-            <md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show Show List">
+            <md-button flex="15" class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show List of Shows">
                 <md-icon md-svg-icon="menu"></md-icon>
             </md-button>
-            <h1>Ben's Shows</h1>
+            <h1 flex offset-gt-sm="30" offset-sm="10">Ben's Shows</h1>
         </md-toolbar>
 
-        <md-content flex layout-padding id="content">
+        <md-content layout="column" layout-padding id="content">
             <div layout="row" class="header">
-                <div class="avatar-container">
+                <div flex-sm="10" class="avatar-container">
                     <div ng-style="ul.selected.image | extendDefault:'show-image'"></div>
                 </div>
-                <h2 class="header-text">{{ul.selected.name}}</h2>
+                <h2 flex-gt-sm="80" flex-sm="55" offset-sm="5" class="header-text">{{ul.selected.name}}</h2>
+                <md-checkbox flex ng-model="ul.selected.watched" aria-label="Toggle Finished Watching Show">
+                    <md-tooltip md-direction="left">Finished Watching?</md-tooltip>
+                </md-checkbox>
             </div>
-            <div layout layout-sm="column" ng-hide="!ul.selected.seasons">
-                <md-input-container flex>
+            <div layout="row" ng-hide="!(ul.selected.filmType | isShowType:'seasons')">
+                <md-input-container flex-sm="50" flex-gt-sm="30">
                     <label>Seasons</label>
                     <input ng-model="ul.selected.seasons">
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container flex-sm="50" flex-gt-sm="30">
                     <label>Episodes per Season</label>
                     <input ng-model="ul.selected.seasonEpisodes">
                 </md-input-container>
             </div>
-            <div layout layout-sm="column" class="width-50">
-                <md-input-container flex ng-hide="!!ul.selected.seasons">
+            <div layout>
+                <md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="!(ul.selected.filmType | isShowType:'episodes')">
                     <label>Episodes</label>
-                    <input ng-model="ul.selected.episodes" ng-readonly="ul.selected.next == -1">
+                    <input ng-model="ul.selected.episodes">
                 </md-input-container>
-                <md-input-container flex ng-hide="ul.selected.next == -1">
+                <md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="ul.selected.watched">
                     <label>Next</label>
                     <input ng-model="ul.selected.next">
                 </md-input-container>
             </div>
-            <div layout class="width-75">
-                <md-input-container flex>
+            <div layout>
+                <md-input-container flex-sm flex-gt-sm="80">
                     <label>Notes</label>
                     <textarea ng-model="ul.selected.notes"></textarea>
                 </md-input-container>
@@ -84,9 +87,10 @@
     <script type="text/javascript" src="./bower_components/angular-material/angular-material.js"></script>
 
     <script src="src/shows/Shows.js"></script>
+    <script src="src/shows/show-constants.js"></script>
     <script src="src/shows/ShowController.js"></script>
     <script src="src/shows/ShowService.js"></script>
-    <script src="src/shows/extend-default-filter.js"></script>
+    <script src="src/shows/show-filters.js"></script>
 
     <script type="text/javascript">
         angular
@@ -95,9 +99,6 @@
 
                 $mdIconProvider
                     .defaultIconSet("./assets/svg/avatars.svg", 128)
-                    .icon("one-piece", "./assets/svg/one-piece.svg", 1000)
-                    .icon("naruto", "./assets/svg/naruto.svg", 600)
-                    .icon("naruto-shippuden", "./assets/svg/naruto-shippuden.svg", 600)
                     .icon("menu", "./assets/svg/menu.svg", 24)
                     .icon("share", "./assets/svg/share.svg", 24)
                     .icon("google_plus", "./assets/svg/google_plus.svg", 512)

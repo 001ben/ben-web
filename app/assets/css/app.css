@@ -18,19 +18,27 @@ body {
   margin: 16px;
   width: 36px; }
 
-md-list .md-button {
-  color: inherit;
-  font-weight: 500;
-  text-align: left;
-  width: 100%; }
-md-list .md-button.selected {
-  color: #03a9f4; }
+md-list {
+  overflow: scroll;
+  height: 90%; }
+  md-list::-webkit-scrollbar {
+    display: none; }
+  md-list .md-button {
+    color: inherit;
+    font-weight: 500;
+    text-align: left;
+    text-overflow: ellipsis;
+    width: 100%; }
+  md-list .md-button.selected {
+    color: #03a9f4; }
 
 md-sidenav md-list {
   padding: 0px 0px 8px 0px; }
 
+md-toolbar > * {
+  margin-top: auto !important;
+  margin-bottom: auto !important; }
 md-toolbar h1 {
-  margin: auto;
   font-size: 1.250em;
   font-weight: 400; }
 
@@ -43,19 +51,29 @@ span.name {
   padding-left: 5px; }
 
 /******** Body/Content Styles ********/
-[ng\:cloak], [ng-cloak], .ng-cloak {
+[ng\:cloak],
+[ng-cloak],
+.ng-cloak {
   display: none !important; }
 
 #content {
   overflow: hidden;
-  padding-left: 40px;
-  padding-right: 40px;
   padding-top: 5px; }
+  @media screen and (max-width: 599px) {
+    #content {
+      padding-left: 25px;
+      padding-right: 25px; } }
+  @media not screen and (max-width: 599px) {
+    #content {
+      padding-left: 40px;
+      padding-right: 40px; } }
   #content .md-button.contact {
     height: 48px;
     width: 48px;
     min-height: 48px;
     min-width: 48px;
+    max-height: 48px;
+    max-width: 48px;
     background-color: transparent;
     border: none;
     margin: 8px auto 16px 0;
@@ -79,15 +97,15 @@ md-button.menuBtn > md-icon {
   width: 24px;
   min-height: 24px;
   min-width: 24px;
+  max-height: 24px;
+  max-width: 24px;
   fill: white; }
 
 .content-wrapper {
   position: relative; }
 
-md-list {
-  overflow: scroll; }
-  md-list::-webkit-scrollbar {
-    display: none; }
+md-sidebar {
+  overflow: hidden; }
 
 .width-15 {
   width: 15%; }
@@ -104,6 +122,8 @@ md-list {
   width: 128px;
   min-height: 128px;
   min-width: 128px;
+  max-height: 128px;
+  max-width: 128px;
   line-height: 128px;
   position: relative;
   border: 1px solid #d8d8d8;
@@ -114,6 +134,11 @@ md-list {
   vertical-align: middle;
   transform: translateZ(0);
   text-align: center; }
+  @media screen and (max-width: 599px) {
+    .avatar-container, .avatar-sidebar-container {
+      zoom: 0.85;
+      -webkit-transform: scale(0.85);
+      -moz-transform: scale(0.85); } }
   .avatar-container > div, .avatar-sidebar-container > div {
     width: 100%;
     height: 100%;
@@ -125,13 +150,17 @@ md-list {
   -moz-transform: scale(0.7); }
 
 .header {
-  height: 128px;
-  line-height: 128px;
   margin-bottom: 20px; }
   .header-text {
-    padding-left: 30px;
-    font-size: 2.5em;
-    margin: auto 0; }
+    margin: auto 0;
+    vertical-align: middle; }
+    @media screen and (max-width: 599px) {
+      .header-text {
+        font-size: 1.2em; } }
+    @media not screen and (max-width: 599px) {
+      .header-text {
+        font-size: 2.5em;
+        margin-left: 20px; } }
   .header * {
     display: inline-block; }
 

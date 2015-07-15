@@ -3,7 +3,8 @@
 
     angular.module('shows')
         .provider('extendDefaultObjects', ExtendDefaultObjects)
-        .filter('extendDefault', ['extendDefaultObjects', ExtendDefaultFilter]);
+        .filter('extendDefault', ['extendDefaultObjects', ExtendDefaultFilter])
+        .filter('isShowType', ['showType', isShowTypeFilter]);
 
     function ExtendDefaultObjects() {
         var defaults = [];
@@ -34,6 +35,17 @@
     function ExtendDefaultFilter(extendDefaultObjects) {
         return function (input, name) {
             return extendDefaultObjects.extendObject(name, input);
+        };
+    };
+    
+    function isShowTypeFilter(showType) {
+        return function(input, typeName) {
+            var showTypeValue = showType[typeName];
+            if (!showTypeValue) {
+                return false;
+            }
+            
+            return input == showTypeValue;
         };
     };
 })();
