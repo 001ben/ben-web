@@ -32,7 +32,7 @@
         </md-list>
     </md-sidenav>
 
-    <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2" ng-cloak>
+    <div flex tabIndex="-1" role="main" class="md-whiteframe-z2" ng-cloak>
         <md-toolbar layout="row" class="md-whiteframe-z1">
             <md-button flex="15" class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show List of Shows">
                 <md-icon md-svg-icon="menu"></md-icon>
@@ -45,7 +45,7 @@
                 <div flex-sm="10" class="avatar-container">
                     <div ng-style="ul.selected.image | extendDefault:'show-image'"></div>
                 </div>
-                <h2 flex-gt-sm="80" flex-sm="55" offset-sm="5" class="header-text">{{ul.selected.name}}</h2>
+                <h2 flex-gt-sm="80" flex-sm="50" offset-sm="5" class="header-text">{{ul.selected.name}}</h2>
                 <md-checkbox flex ng-model="ul.selected.watched" aria-label="Toggle Finished Watching Show">
                     <md-tooltip md-direction="left">Finished Watching?</md-tooltip>
                 </md-checkbox>

@@ -32,7 +32,23 @@ describe('my app', function () {
 
         it('should hide the "next" input', function () {
             shows.selectShow(0);
-            var val = 
+            var checkbox = element(by.model('ul.selected.watched'));
+            var checkboxVal = checkbox.getAttribute('aria-checked');
+            var nextBoxDisplayed = element(by.model('ul.selected.next')).isDisplayed();
+
+            var initialValue, initialDisplayed;
+
+            checkboxVal.then(function (v) {
+                initialValue = v;
+            });
+            
+            nextBoxDisplayed.then(function (v) {
+                initialDisplayed = v;
+            });
+
+            checkbox.click();
+            expect(checkboxVal).not.toEqual(initialValue);
+            expect(nextBoxDisplayed).not.toEqual(initialDisplayed);
         });
     });
 });

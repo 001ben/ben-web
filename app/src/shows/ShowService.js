@@ -48,7 +48,7 @@
                 filmType: showType.episodes
             },
             {
-                name: 'Tokyo Ghoul root A is a very long',
+                name: 'Tokyo Ghoul root A',
                 image: {
                     'background-image': 'url(./assets/show-images/kaneki-small.png)'
                 },
