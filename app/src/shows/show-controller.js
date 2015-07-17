@@ -1,8 +1,8 @@
 (function () {
 
-    angular.module('shows').controller('ShowController', ['showService', '$mdSidenav', '$log', '$q', ShowController]);
+    angular.module('shows').controller('showController', ['showsData', '$mdSidenav', '$log', '$q', ShowController]);
 
-    function ShowController(showService, $mdSidenav, $log, $q) {
+    function ShowController(showsData, $mdSidenav, $log, $q) {
         var self = this;
 
         self.selected = null;
@@ -12,9 +12,10 @@
 
         // Load all registered shows
 
-        showService
+        showsData
             .loadAllShows()
-            .then(function (shows) {
+            .success(function (shows) {
+                console.log('finally hit success');
                 self.shows = [].concat(shows);
                 self.selected = shows[0];
             });

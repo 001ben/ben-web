@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css" />
 </head>
 
-<body ng-app="starterApp" layout="row" ng-controller="ShowController as ul">
+<body ng-app="starterApp" layout="row" ng-controller="showController as ul">
     <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" ng-cloak>
         <md-toolbar layout="row" class="md-whiteframe-z1">
             <h1 flex="33" offset="33">Shows</h1>
@@ -50,7 +50,7 @@
                     <md-tooltip md-direction="left">Finished Watching?</md-tooltip>
                 </md-checkbox>
             </div>
-            <div layout="row" ng-hide="!(ul.selected.filmType | isShowType:'seasons')">
+            <div layout="row" ng-hide="ul.selected.filmType != 'seasons'">
                 <md-input-container flex-sm="50" flex-gt-sm="30">
                     <label>Seasons</label>
                     <input ng-model="ul.selected.seasons">
@@ -61,7 +61,7 @@
                 </md-input-container>
             </div>
             <div layout>
-                <md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="!(ul.selected.filmType | isShowType:'episodes')">
+                <md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="ul.selected.filmType != 'episodes'">
                     <label>Episodes</label>
                     <input ng-model="ul.selected.episodes">
                 </md-input-container>
@@ -80,16 +80,15 @@
 
     </div>
 
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script type="text/javascript" src="./bower_components/angular-material/angular-material.js"></script>
 
-    <script src="src/shows/Shows.js"></script>
+    <script src="src/shows/shows.js"></script>
     <script src="src/shows/show-constants.js"></script>
-    <script src="src/shows/ShowController.js"></script>
-    <script src="src/shows/ShowService.js"></script>
+    <script src="src/shows/show-controller.js"></script>
+    <script src="src/shows/shows-data.js"></script>
     <script src="src/shows/show-filters.js"></script>
 
     <script type="text/javascript">

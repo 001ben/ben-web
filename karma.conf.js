@@ -10,10 +10,15 @@ module.exports = function (config) {
 			'app/bower_components/angular-material/angular-material.js',
 			'app/bower_components/angular-mocks/angular-mocks.js',
             
-            'app/src/shows/Shows.js',
+            'app/bower_components/jquery/dist/jquery.js',
+            'app/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+            
+            'app/src/shows/shows.js',
             
             'app/src/**/*.js',
-			'karma-tests/*.js'
+			'tests/unit/*.js',
+            
+            { pattern: 'tests/mock-data/*.json', watched: true, served: true, included: true }
 		],
 
 		autoWatch: true,
@@ -24,13 +29,12 @@ module.exports = function (config) {
 
 		plugins: [
 			'karma-chrome-launcher',
-			'karma-firefox-launcher',
 			'karma-jasmine',
 			'karma-junit-reporter'
 		],
 
 		junitReporter: {
-			outputFile: 'test_out/unit.xml',
+			outputFile: 'tests/unit.xml',
 			suite: 'unit'
 		}
 
