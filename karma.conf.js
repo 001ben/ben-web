@@ -7,7 +7,8 @@ module.exports = function (config) {
 			'app/bower_components/angular/angular.js',
 			'app/bower_components/angular-animate/angular-animate.js',
 			'app/bower_components/angular-aria/angular-aria.js',
-			'app/bower_components/angular-material/angular-material.js',
+			'app/bower_components/angular-messages/angular-messages.js',
+            'app/bower_components/angular-material/angular-material.js',
 			'app/bower_components/angular-mocks/angular-mocks.js',
             
             'app/bower_components/jquery/dist/jquery.js',

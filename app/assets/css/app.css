@@ -33,7 +33,7 @@ md-list {
     color: #03a9f4; }
 
 md-sidenav md-list {
-  padding: 0px 0px 8px 0px; }
+  padding: 0 0 8px 0; }
 
 md-toolbar > * {
   margin-top: auto !important;
@@ -49,6 +49,11 @@ span.name {
   font-weight: bold;
   font-size: 1.1em;
   padding-left: 5px; }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+  margin: 0; }
 
 /******** Body/Content Styles ********/
 [ng\:cloak],
@@ -116,6 +121,33 @@ md-sidebar {
 .width-75 {
   width: 75%; }
 
+[ben-editable]:focus, [ben-editable] *:focus {
+  outline: none; }
+[ben-editable] [contenteditable] {
+  border-width: 0 0 2px 0;
+  border-color: rgba(0, 0, 0, 0.12);
+  border-style: inset; }
+  [ben-editable] [contenteditable]:empty:not(:focus):before {
+    content: attr(data-ph);
+    color: rgba(0, 0, 0, 0.2); }
+[ben-editable].ng-invalid [contenteditable] {
+  border-color: #f44336; }
+[ben-editable]:not(.ng-invalid) [contenteditable]:focus {
+  border-color: #607d8b; }
+[ben-editable] [ng-message] {
+  -webkit-font-smoothing: antialiased;
+  position: absolute;
+  font-size: 12px;
+  line-height: 24px;
+  padding-right: 30px;
+  color: #f44336; }
+
+[ben-contenteditable] ng-transclude {
+  display: none; }
+
+md-list-item > .md-button {
+  text-transform: none; }
+
 /******** Header/Avatar Styles ********/
 .avatar-container, .avatar-sidebar-container {
   height: 128px;
@@ -161,7 +193,7 @@ md-sidebar {
       .header-text {
         font-size: 2.5em;
         margin-left: 20px; } }
-  .header * {
+  .header > * {
     display: inline-block; }
 
 /******** Material Icon Styles ********/

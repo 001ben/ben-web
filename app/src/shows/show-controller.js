@@ -1,23 +1,27 @@
 (function () {
 
-    angular.module('shows').controller('showController', ['showsData', '$mdSidenav', '$log', '$q', ShowController]);
+    angular.module('shows')
+        .controller('showController', ['showData', 'showSaver', '$mdSidenav', '$log', '$q', ShowController]);
 
-    function ShowController(showsData, $mdSidenav, $log, $q) {
+    function ShowController(showData, showSaver, $mdSidenav, $log, $q) {
         var self = this;
-
-        self.selected = null;
+        
+        self.selected = {
+            name: ' '
+        };
         self.shows = [];
         self.selectShow = selectShow;
         self.toggleList = toggleShowsList;
+        self.loading = true;
 
         // Load all registered shows
-
-        showsData
+        showData
             .loadAllShows()
             .success(function (shows) {
-                console.log('finally hit success');
                 self.shows = [].concat(shows);
                 self.selected = shows[0];
+                self.loading = false;
+                initSaver();
             });
 
         // *********************************
@@ -33,8 +37,18 @@
         }
 
         function selectShow(show) {
+            if(!showSaver.saveCurrent())
+                return;
+            
             self.selected = angular.isNumber(show) ? $scope.shows[show] : show;
             self.toggleList();
+            initSaver();
+        }
+        
+        function initSaver() {
+            showSaver.init(self.showForm, self.selected);
+            self.showForm.$setPristine();
+            self.showForm.$setUntouched();
         }
     }
 })();

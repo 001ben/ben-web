@@ -51,4 +51,11 @@ describe('my app', function () {
             expect(nextBoxDisplayed).not.toEqual(initialDisplayed);
         });
     });
+    
+    describe('validation logic', function() {
+        
+        it('should require a name to be entered', function() {
+            
+        });
+    });
 });

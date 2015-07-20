@@ -5,6 +5,9 @@ Description: This file contains the styles for my shows app
 
 // Helpers / Variables
 $sm: "screen and (max-width: 599px)";
+$md-red: rgb(244, 67, 54);
+$md-grey: rgb(96, 125, 139);
+$md-fade: rgba(0, 0, 0, 0.12);
 
 @mixin zoom($scale) {
     zoom: $scale;
@@ -20,6 +23,7 @@ $sm: "screen and (max-width: 599px)";
     max-height: $dimension;
     max-width: $dimension;
 }
+
 
 /******** Main styles ********/
 
@@ -59,7 +63,7 @@ md-list {
 }
 
 md-sidenav md-list {
-    padding: 0px 0px 8px 0px;
+    padding: 0 0 8px 0;
 }
 
 md-toolbar {
@@ -81,6 +85,12 @@ span.name {
     font-weight: bold;
     font-size: 1.1em;
     padding-left: 5px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    display: none;
+    margin: 0;
 }
 
 /******** Body/Content Styles ********/
@@ -155,6 +165,43 @@ md-sidebar {
     }
 }
 
+[ben-editable] {
+    &:focus, *:focus {
+        outline: none;
+    }
+    [contenteditable] {
+        border-width: 0 0 2px 0;
+        border-color: $md-fade;
+        border-style: inset;
+        &:empty:not(:focus):before {
+            content: attr(data-ph);
+            color: rgba($md-fade, 0.2);
+        }
+    }
+    &.ng-invalid [contenteditable] {
+        border-color: $md-red;
+    }
+    &:not(.ng-invalid) [contenteditable]:focus {
+        border-color: $md-grey;
+    }
+    [ng-message] {
+        -webkit-font-smoothing: antialiased;
+        position: absolute;
+        font-size: 12px;
+        line-height: 24px;
+        padding-right: 30px;
+        color: $md-red;
+    }
+}
+
+[ben-contenteditable] ng-transclude {
+    display: none;
+}
+
+md-list-item > .md-button {
+    text-transform: none;
+}
+
 /******** Header/Avatar Styles ********/
 
 .avatar-container {
@@ -197,7 +244,7 @@ md-sidebar {
             margin-left: 20px;
         }
     }
-    * {
+    > * {
         display: inline-block;
     }
 }
