@@ -1,12 +1,12 @@
 (function () {
     'use strict';
 
-    angular.module('shows').service('showSaver', ['showData', '$timeout', '$log', '$rootScope', ShowSaver]);
+    angular.module('shows').service('showSaver', ['showData', '$interval', '$log', '$rootScope', ShowSaver]);
 
     var saverDebounceRate = 1000;
 
     // Service just maps object methods to api urls
-    function ShowSaver(showData, $timeout, $log, $rootScope) {
+    function ShowSaver(showData, $interval, $log, $rootScope) {
 
         var currentId,
             currentForm,
@@ -15,22 +15,25 @@
             debouncer = {},
             storedModelObjects = {};
 
-        function cancelCountdown(showId) {
+        function cancelSaver(showId) {
             showId = showId || currentId;
 
             if (debouncer[showId]) {
-                $timeout.cancel(debouncer[showId]);
-                debouncer[showId] = null;
+                if($interval.cancel(debouncer[showId]))
+                {   
+                    debouncer[showId] = null;
+                }
+                else
+                    $log.error('Could not cancel showId: ' + showId);
             }
         }
 
-        function startCountdown(showId, showObject, attemptNo) {
+        function startSaver(showId, showObject) {
             showId = showId || currentId;
             showObject = showObject || currentShowObject;
-            attemptNo = attemptNo || 0;
 
-            cancelCountdown(showId);
-            debouncer[showId] = $timeout(countdownComplete, saverDebounceRate, true, showId, showObject, attemptNo);
+            cancelSaver(showId);
+            debouncer[showId] = $interval(attemptSave, saverDebounceRate, 5, true, showId, showObject);
         }
 
         function copyChangedFields(models, showObject) {
@@ -55,8 +58,7 @@
                 $log.error('All model objects are pristine');
         }
 
-        function countdownComplete(saveId, saveObject, attemptNo) {
-            debouncer[saveId] = null;
+        function attemptSave(saveId, saveObject) {
             var submitObject;
 
             // This block handles case that we've switched shows and saving is occurring
@@ -79,10 +81,7 @@
                 }
             }
 
-            // only case a submit object should not be found is if the current form is pristine or invalid
-            if (!submitObject) {
-                startCountdown(saveId, saveObject);
-            } else {
+            if (submitObject) {
                 showData.updateShow(saveId, submitObject)
                     .success(function () {
                         if (storedModelObjects[saveId]) {
@@ -102,21 +101,21 @@
                         }
 
                         // Keep on resubmitting for 5 attempts then log error
-                        if (err.validationFailed !== true && attemptNo < 4)
-                            startCountdown(saveId, saveObject, attemptNo + 1);
+                        if (err.validationFailed === true)
+                            cancelSaver(saveId);
                         else
                             $log.error('Attempted to save 5 times unsuccessfully', err);
                     });
             }
         }
 
-        function saveCurrent() {
+        function storeCurrent() {
             if (!currentId || !currentModels) {
                 $log.error("Tried saving current before initialisation");
                 return false;
             } else if (debouncer[currentId]) {
                 if (currentForm.$pristine) {
-                    $timeout.cancel(debouncer[currentId]);
+                    cancelSaver(currentId);
                 } else if (currentForm.$invalid) {
                     return false;
                 } else {
@@ -132,13 +131,13 @@
                     storedModelObjects[currentId] = obj;
                 }
             }
-            
+
             return true;
         }
 
         function clearAll() {
             for (var id in debouncer) {
-                $timeout.cancel(debouncer[id]);
+                cancelSaver(id);
             }
             for (var id in storedModelObjects) {
                 storedModelObjects[id] = null;
@@ -168,7 +167,7 @@
                             };
                         }(p),
                         function (newVal, oldVal) {
-                            startCountdown();
+                            startSaver();
                         }
                     ));
                 }
@@ -186,7 +185,7 @@
 
         return {
             init: initialise,
-            saveCurrent: saveCurrent,
+            storeCurrent: storeCurrent,
             clearAll: clearAll
         };
     }

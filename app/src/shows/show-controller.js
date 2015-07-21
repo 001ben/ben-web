@@ -37,7 +37,7 @@
         }
 
         function selectShow(show) {
-            if(!showSaver.saveCurrent())
+            if(!showSaver.storeCurrent())
                 return;
             
             self.selected = angular.isNumber(show) ? $scope.shows[show] : show;

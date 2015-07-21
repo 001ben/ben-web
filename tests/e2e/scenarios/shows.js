@@ -21,9 +21,9 @@ describe('my app', function () {
     describe('selecting a show', function () {
 
         it('should display a different show title in the details', function () {
-            shows.selectShow(1);
+            shows.selectShow(0);
             var name = details.currentShowName();
-            shows.selectShow(2);
+            shows.selectShow(1);
             expect(details.currentShowName()).not.toEqual(name);
         });
     });

@@ -16,7 +16,7 @@ describe('ShowController', function () {
     }));
 
     beforeEach(inject(function (showData, $mdSidenav, $log, $q) {
-        showSaver = jasmine.createSpyObj('showSaver', ['saveCurrent', 'init']);
+        showSaver = jasmine.createSpyObj('showSaver', ['storeCurrent', 'init']);
         showForm = jasmine.createSpyObj('showsForm', ['$setPristine', '$setUntouched']);
 
         var injectables = {
@@ -57,28 +57,28 @@ describe('ShowController', function () {
             expect(showForm.$setUntouched.calls.count()).toBe(1);
 
             // Simulate unable to change to a different show if the form is invalid
-            showSaver.saveCurrent.and.returnValue(false);
+            showSaver.storeCurrent.and.returnValue(false);
 
             showsController.selectShow(shows[1]);
             expect(showsController.selected).toEqual(shows[0]);
-            expect(showSaver.saveCurrent.calls.count()).toBe(1);
+            expect(showSaver.storeCurrent.calls.count()).toBe(1);
             expect(showSaver.init.calls.count()).toBe(1);
             expect(showForm.$setPristine.calls.count()).toBe(1);
             expect(showForm.$setUntouched.calls.count()).toBe(1);
 
             // Simulate user fixing errors so form not invalid
-            showSaver.saveCurrent.and.returnValue(true);
+            showSaver.storeCurrent.and.returnValue(true);
 
             showsController.selectShow(shows[1]);
             expect(showsController.selected).toEqual(shows[1]);
-            expect(showSaver.saveCurrent.calls.count()).toBe(2);
+            expect(showSaver.storeCurrent.calls.count()).toBe(2);
             expect(showSaver.init.calls.count()).toBe(2);
             expect(showForm.$setPristine.calls.count()).toBe(2);
             expect(showForm.$setUntouched.calls.count()).toBe(2);
 
             showsController.selectShow(shows[2]);
             expect(showsController.selected).toEqual(shows[2]);
-            expect(showSaver.saveCurrent.calls.count()).toBe(3);
+            expect(showSaver.storeCurrent.calls.count()).toBe(3);
             expect(showSaver.init.calls.count()).toBe(3);
             expect(showForm.$setPristine.calls.count()).toBe(3);
             expect(showForm.$setUntouched.calls.count()).toBe(3);            

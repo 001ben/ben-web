@@ -4,7 +4,7 @@ var ShowDetails = function () {
 	};
     
     this.currentShowName = function() {
-        return element(by.binding('ul.selected.name')).getText();
+        return element(by.model('ul.selected.name')).getText();
     };
     
     this.getField = function(fieldBindingPropertyName) {
