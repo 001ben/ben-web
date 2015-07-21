@@ -121,6 +121,9 @@ md-sidebar {
 .width-75 {
   width: 75%; }
 
+input.ng-invalid {
+  border-color: #f44336 !important; }
+
 [ben-editable]:focus, [ben-editable] *:focus {
   outline: none; }
 [ben-editable] [contenteditable] {

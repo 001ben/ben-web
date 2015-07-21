@@ -2,7 +2,7 @@ var mongo = require('mongodb');
 var showModel = require('./models/shows-model');
 var extend = require('extend');
 
-var stringifySafe = require('json-stringify-safe');
+//var stringifySafe = require('json-stringify-safe');
 
 var objectId = mongo.ObjectID;
 var mongoUrl = 'mongodb://localhost:27017/shows';
@@ -93,16 +93,17 @@ var showsHandler = {
                 db.close();
                 sendError(res, err);
             });
-    },
-    testHandler: function (req, res) {
-        var a = {
-            a: 1
-        };
-        var b = {
-            b: 2
-        };
-        res.end(stringifySafe(extend(a, b)));
     }
+//    ,
+//    testHandler: function (req, res) {
+//        var a = {
+//            a: 1
+//        };
+//        var b = {
+//            b: 2
+//        };
+//        res.end(stringifySafe(extend(a, b)));
+//    }
 };
 
 module.exports = showsHandler;

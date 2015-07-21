@@ -6,7 +6,7 @@ describe('Show Services', function () {
         var showData, $scope, $form, $log, $rootScope;
 
         /* beforeEach logic */
-        function getFakeHttpPromise(returnSuccess) {
+        function getFakeHttpPromise(returnSuccess, validationFailed) {
             var q;
 
             inject(function ($q) {
@@ -28,7 +28,7 @@ describe('Show Services', function () {
             if (returnSuccess) {
                 deferred.resolve();
             } else {
-                deferred.reject('Test error');
+                deferred.reject({ validationFailed: validationFailed });
             }
 
             return deferred.promise;
@@ -38,8 +38,9 @@ describe('Show Services', function () {
         beforeEach(module('shows', function ($provide) {
             showData = {
                 returnsSuccess: true,
+                validationFailed: false,
                 updateShow: function (id, show) {
-                    return getFakeHttpPromise(this.returnsSuccess);
+                    return getFakeHttpPromise(this.returnsSuccess, this.validationFailed);
                 }
             };
 
@@ -165,14 +166,25 @@ describe('Show Services', function () {
 
             $scope.$apply(function () {
                 showSaver.init($form, $scope.test);
-                $form.fieldRequired.$setViewValue('new value');
+                $form.fieldRequired.$setViewValue('test value');
                 $form.field.$setViewValue('new value');
             });
+            
+            showData.validationFailed = true;
+            expect($form.fieldRequired.$dirty).toBe(true);
+            $timeout.flush();
+            expect($log.info.logs).toContain([ { validationFailed: true } ]);
+
+            $timeout.verifyNoPendingTasks();
+            
+            showData.validationFailed = false;
+            
+            setViewValue('fieldRequired', 'new value');
 
             expect($form.fieldRequired.$dirty).toBe(true);
 
             $timeout.flush();
-            expect($log.info.logs).toContain(['Test error']);
+            expect($log.info.logs).toContain([ { validationFailed: false } ]);
             expect($form.$dirty).toBe(true);
             expect($form.fieldRequired.$dirty).toBe(true);
 
@@ -180,8 +192,8 @@ describe('Show Services', function () {
                 $timeout.flush();
             }
 
-            expect($log.info.logs.length).toBe(5);
-            expect($log.error.logs).toContain(['Attempted to save 5 times unsuccessfully', 'Test error']);
+            expect($log.info.logs.length).toBe(6);
+            expect($log.error.logs).toContain(['Attempted to save 5 times unsuccessfully', { validationFailed: false }]);
             expect($form.fieldRequired.$dirty).toBe(true);
 
             showData.returnsSuccess = true;

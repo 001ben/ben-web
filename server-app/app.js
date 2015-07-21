@@ -18,7 +18,7 @@ app.use('/assets/show-images', express.static(imageDirectory, {
 app.use('/shows', bodyParser.json());
 app.get('/shows', showsDb.getAllHandler);
 app.post('/shows/update/:id', showsDb.updateHandler);
-app.get('/shows/test', showsDb.testHandler);
+//app.get('/shows/test', showsDb.testHandler);
 
 // Mount static middleware for all other requests
 app.use(express.static(publicDirectory));

@@ -102,7 +102,7 @@
                         }
 
                         // Keep on resubmitting for 5 attempts then log error
-                        else if (err.validationFailed !== true && attemptNo < 4)
+                        if (err.validationFailed !== true && attemptNo < 4)
                             startCountdown(saveId, saveObject, attemptNo + 1);
                         else
                             $log.error('Attempted to save 5 times unsuccessfully', err);
