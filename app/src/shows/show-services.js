@@ -3,7 +3,8 @@
 
     angular.module('shows').service('showSaver', ['showData', '$interval', '$log', '$rootScope', ShowSaver]);
 
-    var saverDebounceRate = 1000;
+    var saverDebounceRate = 1000,
+        retries = 5;
 
     // Service just maps object methods to api urls
     function ShowSaver(showData, $interval, $log, $rootScope) {
@@ -18,22 +19,21 @@
         function cancelSaver(showId) {
             showId = showId || currentId;
 
-            if (debouncer[showId]) {
-                if($interval.cancel(debouncer[showId]))
-                {   
-                    debouncer[showId] = null;
-                }
-                else
-                    $log.error('Could not cancel showId: ' + showId);
-            }
+            if (!debouncer[showId])
+                return
+            else if (debouncer[showId].$$state.status || $interval.cancel(debouncer[showId]))
+                debouncer[showId] = null;
+            else
+                $log.error('Could not cancel showId: ' + showId);
         }
 
-        function startSaver(showId, showObject) {
+        function startSaver(showId, showObject, retryCount) {
             showId = showId || currentId;
             showObject = showObject || currentShowObject;
+            retryCount = retryCount || 0;
 
             cancelSaver(showId);
-            debouncer[showId] = $interval(attemptSave, saverDebounceRate, 5, true, showId, showObject);
+            debouncer[showId] = $interval(attemptSave, saverDebounceRate, 1, true, showId, showObject, retryCount);
         }
 
         function copyChangedFields(models, showObject) {
@@ -58,8 +58,8 @@
                 $log.error('All model objects are pristine');
         }
 
-        function attemptSave(saveId, saveObject) {
-            var submitObject;
+        function attemptSave(saveId, saveObject, retryCount) {
+            var submitObject = null;
 
             // This block handles case that we've switched shows and saving is occurring
             // We're assuming that the stored model object has changes and is valid (check before saving it). Will log error if not.
@@ -100,11 +100,12 @@
                             }
                         }
 
-                        // Keep on resubmitting for 5 attempts then log error
                         if (err.validationFailed === true)
                             cancelSaver(saveId);
+                        else if (retryCount < (retries - 1))
+                            startSaver(saveId, saveObject, retryCount + 1);
                         else
-                            $log.error('Attempted to save 5 times unsuccessfully', err);
+                            $log.error('Attempted to save ' + retries + ' times unsuccessfully', err);
                     });
             }
         }
