@@ -188,14 +188,25 @@ input.ng-invalid {
     &:not(.ng-invalid) [contenteditable]:focus {
         border-color: $md-grey;
     }
-    [ng-message] {
-        -webkit-font-smoothing: antialiased;
-        position: absolute;
-        font-size: 12px;
-        line-height: 24px;
-        padding-right: 30px;
-        color: $md-red;
-    }
+}
+
+[ng-message] {
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    font-size: 12px;
+    line-height: 24px;
+    padding-right: 30px;
+    color: $md-red;
+}
+md-select {
+    padding: 0 !important;
+}
+md-select.ng-invalid md-select-label {
+    border-bottom-color: $md-red;
+}
+
+.ben-novalue {
+    color: rgba($md-fade, 0.26);
 }
 
 [ben-contenteditable] ng-transclude {
@@ -204,6 +215,27 @@ input.ng-invalid {
 
 md-list-item > .md-button {
     text-transform: none;
+}
+
+#the-button {
+    position: fixed;
+    bottom: 15px;
+    font-size: 20px;
+    
+    @media #{$sm} {
+        right: 15px;
+    }
+    @media #{"not" $sm} {
+        right: 25px;
+    }
+    
+    md-icon {
+        vertical-align: middle;
+        height: 100%;
+        .material-icons {
+            line-height: inherit;
+        }
+    }
 }
 
 /******** Header/Avatar Styles ********/

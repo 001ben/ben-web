@@ -22,7 +22,7 @@
 
         <md-list>
             <md-list-item ng-repeat="it in ul.shows" ng-cloak>
-                <md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }">
+                <md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }" aria-label="Select Show">
                     <div class="avatar-sidebar-container">
                         <div ng-style="it.image | extendDefault:'show-image'"></div>
                     </div>
@@ -46,18 +46,13 @@
                     <div flex-sm="10" class="avatar-container">
                         <div ng-style="ul.selected.image | extendDefault:'show-image'"></div>
                     </div>
-                    
-                    <div name="name"
-                         class="header-text"
-                         data-tabindex="1"
-                         flex-gt-sm="80" flex-sm="50" offset-sm="5" layout="column"
-                         ben-editable watch="ul.selected" placeholder="Show Name" 
-                         ng-model="ul.selected.name" required>
+
+                    <div name="name" class="header-text" data-tabindex="1" flex-gt-sm="80" flex-sm="50" offset-sm="5" layout="column" ben-editable watch="ul.selected" placeholder="Show Name" ng-model="ul.selected.name" required>
                         <div flex ng-messages="ul.showForm.name.$error">
                             <div flex ng-message="required">A show name is required</div>
                         </div>
                     </div>
-                    <md-checkbox flex name="watched" ng-model="ul.selected.watched" aria-label="Toggle Finished Watching Show" tabindex="7">
+                    <md-checkbox flex name="watched" ng-model="ul.selected.watched" aria-label="Toggle Finished Watching Show" tabindex="8">
                         <md-tooltip md-direction="left">Finished Watching?</md-tooltip>
                     </md-checkbox>
                 </div>
@@ -77,7 +72,7 @@
                         </div>
                     </md-input-container>
                 </div>
-                <div layout>
+                <div layout ng-hide="!ul.selected.filmType">
                     <md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="ul.selected.filmType != 'episodes'">
                         <label>Episodes</label>
                         <input type="number" name="episodes" ng-model="ul.selected.episodes" tabindex="4">
@@ -91,13 +86,29 @@
                     </md-input-container>
                 </div>
                 <div layout>
+                    <div flex-sm flex-gt-sm="80">
+                        <md-select name="filmType" ng-model="ul.selected.filmType" ng-class="{ 'ben-novalue': !ul.selected.filmType }" tabindex="6" required>
+                          <md-select-label>{{ ul.selected.filmType || 'Film Type' }}</md-select-label>
+                          <md-option ng-value="type" ng-repeat="type in ul.showType">{{ type }}</md-option>
+                        </md-select>
+                        <div flex ng-messages="ul.showForm.filmType.$error">
+                            <div flex ng-message="required">A film type is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div layout>
                     <md-input-container flex-sm flex-gt-sm="80">
                         <label>Notes</label>
-                        <textarea name="notes" ng-model="ul.selected.notes" tabindex="6"></textarea>
+                        <textarea name="notes" ng-model="ul.selected.notes" tabindex="7"></textarea>
                     </md-input-container>
                 </div>
             </form>
         </md-content>
+        <div id="the-button">
+            <md-button id="add-button" aria-label="Add Show" class="md-fab md-primary" ng-click="ul.addShow()" role="button" tabindex="9">
+                <md-icon>add</md-icon>
+            </md-button>
+        </div>
 
     </div>
 
@@ -105,7 +116,7 @@
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-messages/angular-messages.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
-    
+
     <script type="text/javascript" src="./bower_components/angular-material/angular-material.js"></script>
 
     <script src="src/shows/shows.js"></script>

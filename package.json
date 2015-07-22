@@ -7,19 +7,25 @@
   "devDependencies": {
     "jasmine-core": "^2.3.4",
     "json-stringify-safe": "^5.0.1",
+    "jsonfile": "^2.2.1",
     "karma": "^0.13.1",
     "karma-chrome-launcher": "^0.2.0",
     "karma-jasmine": "^0.3.6",
     "karma-junit-reporter": "^0.3.1",
-    "protractor": "^2.1.0"
+    "protractor": "^2.1.0",
+    "request-promise": "^0.4.2"
   },
   "scripts": {
     "postinstall": "bower update --production",
     "prestart": "npm update --production",
     "start": "node server-app/app.js 80",
-    "test": "protractor ./tests/e2e/protractor.conf.js",
-    "startdev": "node server-app/app.js",
-    "updatedev": "npm update && bower update"
+    "test": "protractor ./tests/e2e/protractor.conf.js --suite full",
+    "exp": "protractor ./tests/e2e/protractor.conf.js --suite experiment",
+    "winmorning": "start \"Database\" cmd /C \"mongod\" && start \"Server\" cmd /C \"node .\\server-app\\app.js\"",
+    "wintest": "start \"Test Server\" cmd /C \"node .\\server-app\\test-app.js\" && start \"Selenium\" cmd /C \"webdriver-manager start\" && start \"Karma\" cmd /C \"karma start\"",
+    "winsass": "start \"Sass Watch\" cmd /C \"sass --watch .\\scss:.\\app\\assets\\css\"",
+    "winjs": "start \"Karma\" cmd /C \"karma start",
+    "spawn": "start \"A Process\" cmd /C"
   },
   "dependencies": {
     "body-parser": "^1.13.2",

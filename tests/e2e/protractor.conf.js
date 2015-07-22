@@ -1,15 +1,26 @@
+var testUrl =  'http://localhost:8080';
+
 exports.config = {
 	allScriptsTimeout: 11000,
 
 	specs: [
 		'./**/*.js'
 	],
+    
+    suites: {
+        experiment: './experiment/my_exp.js',
+        full: './scenarios/shows.js'
+    },
 
 	capabilities: {
 		'browserName': 'chrome'
 	},
+    
+    params: {
+        testUrl: testUrl
+    },
 
-	baseUrl: 'http://localhost:8080',
+	baseUrl: testUrl,
 
 	seleniumAddress: 'http://127.0.0.1:4444/wd/hub',
 

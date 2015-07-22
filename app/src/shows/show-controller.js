@@ -1,17 +1,20 @@
 (function () {
 
     angular.module('shows')
-        .controller('showController', ['showData', 'showSaver', '$mdSidenav', '$log', '$q', ShowController]);
+        .controller('showController', ['showData', 'showSaver', 'showType', '$mdSidenav', '$log', '$q', ShowController]);
 
-    function ShowController(showData, showSaver, $mdSidenav, $log, $q) {
+    function ShowController(showData, showSaver, showType, $mdSidenav, $log, $q) {
         var self = this;
-        
+
         self.selected = {
             name: ' '
         };
+        
+        self.showType = showType;
         self.shows = [];
         self.selectShow = selectShow;
         self.toggleList = toggleShowsList;
+        self.addShow = addShow;
         self.loading = true;
 
         // Load all registered shows
@@ -37,18 +40,31 @@
         }
 
         function selectShow(show) {
-            if(!showSaver.storeCurrent())
+            if (self.showForm.$invalid || !showSaver.storeCurrent())
                 return;
-            
+
             self.selected = angular.isNumber(show) ? $scope.shows[show] : show;
             self.toggleList();
             initSaver();
         }
-        
-        function initSaver() {
-            showSaver.init(self.showForm, self.selected);
+
+        function initSaver(isNew) {
+            var funcName = 'init' + (!isNew ? 'Show' : 'New');
+            showSaver[funcName](self.showForm, self.selected);
+            
             self.showForm.$setPristine();
             self.showForm.$setUntouched();
+        }
+
+        function addShow() {
+            if (!showSaver.storeCurrent())
+                return;
+            
+            var newShow = { };
+            
+            self.shows.unshift(newShow);
+            self.selected = newShow;
+            initSaver(true);
         }
     }
 })();

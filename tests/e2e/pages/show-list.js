@@ -1,6 +1,5 @@
 var ShowList = function () {
-	var getShows = function()
-    {
+	var getShows = function() {
         return element.all(by.css('md-list-item'));
     };
     

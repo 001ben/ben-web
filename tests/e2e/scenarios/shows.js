@@ -3,6 +3,13 @@
 var ShowList = require('../pages/show-list.js');
 var ShowDetails = require('../pages/show-details.js');
 var Help = require('../help/helpers.js');
+var requestP = require('request-promise');
+
+// Jquery HasClass Implementation
+function hasClass(element, selector) {
+    var className = " " + selector + " ";
+    return (" " + element.className + " ").replace(/[\n\t]/g, " ").indexOf(" thatClass ") > -1;
+}
 
 describe('my app', function () {
 
@@ -11,7 +18,9 @@ describe('my app', function () {
     var help = new Help();
 
     beforeEach(function () {
-        shows.loadAll();
+        browser.wait(requestP(browser.params.testUrl + '/shows/reset')).then(function () {
+            shows.loadAll();
+        });
     });
 
     it('should load a list of shows', function () {
@@ -22,9 +31,9 @@ describe('my app', function () {
 
         it('should display a different show title in the details', function () {
             shows.selectShow(0);
-            var name = details.currentShowName();
+            var name = details.showName();
             shows.selectShow(1);
-            expect(details.currentShowName()).not.toEqual(name);
+            expect(details.showName()).not.toEqual(name);
         });
     });
 
@@ -41,7 +50,7 @@ describe('my app', function () {
             checkboxVal.then(function (v) {
                 initialValue = v;
             });
-            
+
             nextBoxDisplayed.then(function (v) {
                 initialDisplayed = v;
             });
@@ -51,11 +60,80 @@ describe('my app', function () {
             expect(nextBoxDisplayed).not.toEqual(initialDisplayed);
         });
     });
-    
-    describe('validation logic', function() {
-        
-        it('should require a name to be entered', function() {
-            
+
+    describe('adding a show', function () {
+        it('should initialise as invalid', function () {
+            expect(details.showForm().getAttribute('class')).toMatch('ng-valid');
+            details.addButton().click();
+            expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
+        });
+
+        it('should add the show to the list', function () {
+            browser.wait(shows.count()).then(function (val) {
+                details.addButton().click();
+                expect(shows.count()).toBe(val + 1);
+            });
+        });
+
+        function testError(err) {
+            expect(err).toBe(null);
+        }
+
+        it('should save to the database when valid, not before', function () {
+            var serverCountUrl = {
+                uri: browser.params.testUrl + '/shows/count',
+                transform: function (body) {
+                    return JSON.parse(body);
+                }
+            }
+
+            browser.wait(requestP(serverCountUrl)).then(function (initialCount) {
+                details.addButton().click();
+                expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
+
+                expect(requestP(serverCountUrl)).toEqual(initialCount);
+
+                details.getModelField('ul.selected.name').element(by.css('[contenteditable]')).sendKeys('My favourite show');
+                details.getModelField('ul.selected.filmType').click();
+                element(by.css('md-option[value=episodes]')).click();
+
+                expect(details.showForm().getAttribute('class')).toMatch('ng-valid');
+
+                browser.sleep(1000).then(function () {
+                    expect(requestP(serverCountUrl)).toBe(initialCount + 1);
+                });
+            });
+
+        });
+    });
+
+
+    it('should not be able to add another one before the first one is valid', function () {
+        var initialCount;
+
+        browser.wait(shows.count()).then(function (count) {
+            initialCount = count;
+
+            details.addButton().click();
+            expect(shows.count()).toBe(initialCount + 1);
+            details.getModelField('ul.selected.filmType').click();
+            element(by.css('md-option[value=episodes]')).click();
+            expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
+
+            return browser.sleep(1000);
+        }).then(function () {
+            expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
+            details.addButton().click();
+            expect(shows.count()).toBe(initialCount + 1);
+            details.getModelField('ul.selected.name').element(by.css('[contenteditable]')).sendKeys('Best test');
+
+            expect(details.showForm().getAttribute('class')).toMatch('ng-valid');
+            return browser.sleep(1000);
+        }).then(function () {
+            details.addButton().click();
+            expect(shows.count()).toBe(initialCount + 2);
+            expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
+
         });
     });
 });

@@ -13,6 +13,9 @@
             },
             updateShow: function(showId, showObj) {
                 return $http.post('/shows/update/' + showId, showObj);
+            },
+            createShow: function(showObj) {
+                return $http.post('/shows/create', showObj);
             }
         };
     }

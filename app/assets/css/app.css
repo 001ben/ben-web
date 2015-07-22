@@ -137,7 +137,8 @@ input.ng-invalid {
   border-color: #f44336; }
 [ben-editable]:not(.ng-invalid) [contenteditable]:focus {
   border-color: #607d8b; }
-[ben-editable] [ng-message] {
+
+[ng-message] {
   -webkit-font-smoothing: antialiased;
   position: absolute;
   font-size: 12px;
@@ -145,11 +146,36 @@ input.ng-invalid {
   padding-right: 30px;
   color: #f44336; }
 
+md-select {
+  padding: 0 !important; }
+
+md-select.ng-invalid md-select-label {
+  border-bottom-color: #f44336; }
+
+.ben-novalue {
+  color: rgba(0, 0, 0, 0.26); }
+
 [ben-contenteditable] ng-transclude {
   display: none; }
 
 md-list-item > .md-button {
   text-transform: none; }
+
+#the-button {
+  position: fixed;
+  bottom: 15px;
+  font-size: 20px; }
+  @media screen and (max-width: 599px) {
+    #the-button {
+      right: 15px; } }
+  @media not screen and (max-width: 599px) {
+    #the-button {
+      right: 25px; } }
+  #the-button md-icon {
+    vertical-align: middle;
+    height: 100%; }
+    #the-button md-icon .material-icons {
+      line-height: inherit; }
 
 /******** Header/Avatar Styles ********/
 .avatar-container, .avatar-sidebar-container {

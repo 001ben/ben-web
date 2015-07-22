@@ -3,12 +3,20 @@ var ShowDetails = function () {
 		browser.get('/#');
 	};
     
-    this.currentShowName = function() {
+    this.showName = function() {
         return element(by.model('ul.selected.name')).getText();
     };
     
-    this.getField = function(fieldBindingPropertyName) {
-        return element();
+    this.showForm = function() {
+        return element(by.name('ul.showForm'));
+    };
+    
+    this.addButton = function() {
+        return element(by.id('add-button'));
+    };
+    
+    this.getModelField = function(fieldModelPropertyName) {
+        return element(by.model(fieldModelPropertyName));
     };
 };
 

@@ -20,7 +20,7 @@
             showId = showId || currentId;
 
             if (!debouncer[showId])
-                return
+                return;
             else if (debouncer[showId].$$state.status || $interval.cancel(debouncer[showId]))
                 debouncer[showId] = null;
             else
@@ -60,6 +60,7 @@
 
         function attemptSave(saveId, saveObject, retryCount) {
             var submitObject = null;
+            debouncer[saveId] = null;
 
             // This block handles case that we've switched shows and saving is occurring
             // We're assuming that the stored model object has changes and is valid (check before saving it). Will log error if not.
@@ -81,32 +82,51 @@
                 }
             }
 
-            if (submitObject) {
-                showData.updateShow(saveId, submitObject)
-                    .success(function () {
-                        if (storedModelObjects[saveId]) {
-                            storedModelObjects[saveId] = null;
-                        }
-                    })
-                    .error(function (err) {
-                        $log.info(err);
+            if (!submitObject)
+                return;
+            else if (saveId === newId)
+                doCreate(submitObject, retryCount);
+            else
+                doUpdate(saveId, submitObject, retryCount);
+        }
 
-                        // Make all fields dirty if still on current so resubmission is successful    
-                        if (currentId == saveId) {
-                            for (var m in submitObject) {
-                                currentModels[m].$setDirty(true);
-                                currentModels[m].$setTouched(true);
-                                currentModels[m].$validate();
-                            }
-                        }
+        function doCreate(show, retryCount) {
+            showData.createShow(show)
+                .success(function (id) {
+                    show._id = id;
+                    currentId = id;
+                }).error(handleError(newId, show, retryCount));
+        }
 
-                        if (err.validationFailed === true)
-                            cancelSaver(saveId);
-                        else if (retryCount < (retries - 1))
-                            startSaver(saveId, saveObject, retryCount + 1);
-                        else
-                            $log.error('Attempted to save ' + retries + ' times unsuccessfully', err);
-                    });
+        function doUpdate(saveId, show, retryCount) {
+            showData.updateShow(saveId, show)
+                .success(function () {
+                    if (storedModelObjects[saveId]) {
+                        storedModelObjects[saveId] = null;
+                    }
+                })
+                .error(handleError(saveId, show, retryCount));
+        }
+
+        function handleError(saveId, show, retryCount) {
+            return function (err) {
+                $log.info(err);
+
+                // Make all fields dirty if still on current so resubmission is successful    
+                if (currentId == saveId) {
+                    for (var m in show) {
+                        currentModels[m].$setDirty(true);
+                        currentModels[m].$setTouched(true);
+                        currentModels[m].$validate();
+                    }
+                }
+
+                if (err.validationFailed === true)
+                    cancelSaver(saveId);
+                else if (retryCount < (retries - 1))
+                    startSaver(saveId, show, retryCount + 1);
+                else
+                    $log.error('Attempted to save ' + retries + ' times unsuccessfully', err);
             }
         }
 
@@ -114,7 +134,9 @@
             if (!currentId || !currentModels) {
                 $log.error("Tried saving current before initialisation");
                 return false;
-            } else if (debouncer[currentId]) {
+            } else if (currentId == newId)
+                return false;
+            else if (debouncer[currentId]) {
                 if (currentForm.$pristine) {
                     cancelSaver(currentId);
                 } else if (currentForm.$invalid) {
@@ -176,7 +198,11 @@
         };
 
         function initialise(form, show) {
-            currentId = show._id;
+            if (currentForm && currentForm.$invalid) {
+                $log.error('attempted initialising while current form invalid');
+                return;
+            }
+
             currentForm = form;
             currentShowObject = show;
             currentModels = {};
@@ -184,8 +210,26 @@
             watchCurrentShowObjectChanges();
         }
 
+        function initialiseShow(form, show) {
+            currentId = show._id;
+            initialise(form, show);
+        }
+
+        var newId = 'newId';
+
+        function initialiseNew(form, show) {
+            if (currentId == newId) {
+                $log.error('attempted to initialise a new show before previous new show was saved');
+                return;
+            }
+
+            currentId = newId;
+            initialise(form, show);
+        }
+
         return {
-            init: initialise,
+            initShow: initialiseShow,
+            initNew: initialiseNew,
             storeCurrent: storeCurrent,
             clearAll: clearAll
         };
