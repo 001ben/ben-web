@@ -5,6 +5,11 @@
   "description": "Bens web project",
   "repository": "https://github.com/001ben/ben-web",
   "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
     "jasmine-core": "^2.3.4",
     "json-stringify-safe": "^5.0.1",
     "jsonfile": "^2.2.1",
@@ -23,8 +28,7 @@
     "exp": "protractor ./tests/e2e/protractor.conf.js --suite experiment",
     "winmorning": "start \"Database\" cmd /C \"mongod\" && start \"Server\" cmd /C \"node .\\server-app\\app.js\"",
     "wintest": "start \"Test Server\" cmd /C \"node .\\server-app\\test-app.js\" && start \"Selenium\" cmd /C \"webdriver-manager start\" && start \"Karma\" cmd /C \"karma start\"",
-    "winsass": "start \"Sass Watch\" cmd /C \"sass --watch .\\scss:.\\app\\assets\\css\"",
-    "winjs": "start \"Karma\" cmd /C \"karma start",
+    "windev": "start \"Dev Watch\" cmd /C \"gulp\" && start \"Karma\" cmd /C \"karma start",
     "spawn": "start \"A Process\" cmd /C"
   },
   "dependencies": {

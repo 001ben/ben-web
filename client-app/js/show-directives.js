@@ -1,6 +1,6 @@
-angular.module('shows').directive('benEditable', BenEditable);
+angular.module('shows').directive('benEditable', ['$mdMedia', BenEditable]);
 
-function BenEditable() {
+function BenEditable($mdMedia) {
     return {
         restrict: 'A',
         require: 'ngModel',
@@ -24,7 +24,7 @@ function BenEditable() {
                     if (scope.isEmpty) {
                         scope.style = {
                             display: 'inline-block',
-                            width: '200px'
+                            width: $mdMedia('sm') ? '80%' : '200px'
                         };
                     } else {
                         scope.style = {};

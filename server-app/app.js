@@ -3,7 +3,7 @@ var express = require('express');
 var baseApp = require('./base-app');
 var path = require('path');
 
-var imageDirectory = path.join(__dirname, "../app/assets/show-images");
+var imageDirectory = path.join(__dirname, "../public-app/assets/show-images");
 
 // Instruct clients to cache images sent for 3 hours
 baseApp.serverApp.use('/assets/show-images', express.static(imageDirectory, {

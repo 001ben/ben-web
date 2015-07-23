@@ -4,19 +4,19 @@ module.exports = function (config) {
 		basePath: './',
 
 		files: [
-			'app/bower_components/angular/angular.js',
-			'app/bower_components/angular-animate/angular-animate.js',
-			'app/bower_components/angular-aria/angular-aria.js',
-			'app/bower_components/angular-messages/angular-messages.js',
-            'app/bower_components/angular-material/angular-material.js',
-			'app/bower_components/angular-mocks/angular-mocks.js',
+			'public-app/bower_components/angular/angular.js',
+			'public-app/bower_components/angular-animate/angular-animate.js',
+			'public-app/bower_components/angular-aria/angular-aria.js',
+			'public-app/bower_components/angular-messages/angular-messages.js',
+            'public-app/bower_components/angular-material/angular-material.js',
+			'public-app/bower_components/angular-mocks/angular-mocks.js',
             
-            'app/bower_components/jquery/dist/jquery.js',
-            'app/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+            'public-app/bower_components/jquery/dist/jquery.js',
+            'public-app/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
             
-            'app/src/shows/shows.js',
+            'public-app/js/shows.min.js',
             
-            'app/src/**/*.js',
+            'public-app/js/*.js',
 			'tests/unit/*.js',
             
             { pattern: 'tests/mock-data/*.json', watched: true, served: true, included: true }
