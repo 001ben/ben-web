@@ -28,13 +28,11 @@ function dbActionError(err) {
 
 // Reset testShows on startup
 showJsonApi.doDbAction(resetShows, null, dbActionError);
-
 showJsonApi.api.get('/reset', function (req, res) {
     showJsonApi.doDbAction(resetShows, function () {
         res.end();
     }, dbActionError);
 });
-
 showJsonApi.api.get('/count', function (req, res) {
     showJsonApi.doDbAction(countShows, function (count) {
         res.json(count);
@@ -45,5 +43,5 @@ showJsonApi.api.get('/count', function (req, res) {
 baseApp.port = 8080;
 // Set up show api for data requests
 baseApp.serverApp.use('/shows', showJsonApi.api);
-
+baseApp.initialise();
 baseApp.start();

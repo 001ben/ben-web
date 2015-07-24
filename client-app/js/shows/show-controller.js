@@ -1,9 +1,9 @@
 (function () {
 
     angular.module('shows')
-        .controller('showController', ['showData', 'showSaver', 'showType', '$mdSidenav', '$log', '$q', ShowController]);
+        .controller('showController', ['showData', 'showSaver', 'showType', 'iconSelectorService', '$mdSidenav', '$log', '$q', ShowController]);
 
-    function ShowController(showData, showSaver, showType, $mdSidenav, $log, $q) {
+    function ShowController(showData, showSaver, showType, iconSelectorService, $mdSidenav, $log, $q) {
         var self = this;
 
         self.selected = {
@@ -16,6 +16,7 @@
         self.toggleList = toggleShowsList;
         self.addShow = addShow;
         self.loading = true;
+        self.openIconSelector = iconSelectorService.getShowSelector(handleDialogResponse);
 
         // Load all registered shows
         showData
@@ -65,6 +66,10 @@
             self.shows.unshift(newShow);
             self.selected = newShow;
             initSaver(true);
+        }
+        
+        function handleDialogResponse(message) {
+            $log.info(message);
         }
     }
 })();

@@ -8,8 +8,10 @@ exports.port = process.argv[2] || 80;
 
 var app = express();
 
-// Mount static middleware for all other requests
-app.use(express.static(publicDirectory));
+exports.initialise = function() {
+    // Mount static middleware for all other requests
+    app.use(express.static(publicDirectory));
+};
 
 exports.serverApp = app;
 exports.start = function () {

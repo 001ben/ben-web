@@ -13,4 +13,5 @@ baseApp.serverApp.use('/assets/show-images', express.static(imageDirectory, {
 // Set up show api for data requests
 baseApp.serverApp.use('/shows', showJsonApi.api);
 
+baseApp.initialise();
 baseApp.start();

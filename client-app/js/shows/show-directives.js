@@ -1,3 +1,4 @@
+(function() {
 angular.module('shows').directive('benEditable', ['$mdMedia', BenEditable]);
 
 function BenEditable($mdMedia) {
@@ -56,3 +57,4 @@ function BenEditable($mdMedia) {
         }
     };
 }
+})();

@@ -14,9 +14,8 @@ module.exports = function (config) {
             'public-app/bower_components/jquery/dist/jquery.js',
             'public-app/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
             
-            'public-app/js/shows.min.js',
+            'client-app/js/**/*.js',
             
-            'public-app/js/*.js',
 			'tests/unit/*.js',
             
             { pattern: 'tests/mock-data/*.json', watched: true, served: true, included: true }
