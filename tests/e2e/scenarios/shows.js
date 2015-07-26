@@ -76,7 +76,7 @@ describe('my app', function () {
         });
 
         function testError(err) {
-            expect(err).toBe(null);
+            expect(err).toBeNull();
         }
 
         it('should save to the database when valid, not before', function () {
@@ -94,7 +94,7 @@ describe('my app', function () {
                 expect(requestP(serverCountUrl)).toEqual(initialCount);
 
                 details.getModelField('ul.selected.name').element(by.css('[contenteditable]')).sendKeys('My favourite show');
-                details.getModelField('ul.selected.filmType').click();
+                element(by.css('md-select[name=filmType]')).click();
                 element(by.css('md-option[value=episodes]')).click();
 
                 expect(details.showForm().getAttribute('class')).toMatch('ng-valid');
@@ -105,35 +105,34 @@ describe('my app', function () {
             });
 
         });
-    });
 
+        it('should not be able to add another one before the first one is valid', function () {
+            var initialCount;
 
-    it('should not be able to add another one before the first one is valid', function () {
-        var initialCount;
+            browser.wait(shows.count()).then(function (count) {
+                initialCount = count;
 
-        browser.wait(shows.count()).then(function (count) {
-            initialCount = count;
+                details.addButton().click();
+                expect(shows.count()).toBe(initialCount + 1);
+                element(by.css('md-select[name=filmType]')).click();
+                element(by.css('md-option[value=episodes]')).click();
+                expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
 
-            details.addButton().click();
-            expect(shows.count()).toBe(initialCount + 1);
-            details.getModelField('ul.selected.filmType').click();
-            element(by.css('md-option[value=episodes]')).click();
-            expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
+                return browser.sleep(1000);
+            }).then(function () {
+                expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
+                details.addButton().click();
+                expect(shows.count()).toBe(initialCount + 1);
+                details.getModelField('ul.selected.name').element(by.css('[contenteditable]')).sendKeys('Best test');
 
-            return browser.sleep(1000);
-        }).then(function () {
-            expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
-            details.addButton().click();
-            expect(shows.count()).toBe(initialCount + 1);
-            details.getModelField('ul.selected.name').element(by.css('[contenteditable]')).sendKeys('Best test');
+                expect(details.showForm().getAttribute('class')).toMatch('ng-valid');
+                return browser.sleep(1000);
+            }).then(function () {
+                details.addButton().click();
+                expect(shows.count()).toBe(initialCount + 2);
+                expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
 
-            expect(details.showForm().getAttribute('class')).toMatch('ng-valid');
-            return browser.sleep(1000);
-        }).then(function () {
-            details.addButton().click();
-            expect(shows.count()).toBe(initialCount + 2);
-            expect(details.showForm().getAttribute('class')).toMatch('ng-invalid');
-
+            });
         });
     });
 });

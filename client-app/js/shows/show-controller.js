@@ -16,7 +16,7 @@
         self.toggleList = toggleShowsList;
         self.addShow = addShow;
         self.loading = true;
-        self.openIconSelector = iconSelectorService.getShowSelector(handleDialogResponse);
+        self.openIconSelector = iconSelectorService.getShowSelector(handleDialogResponse, getSelectedShowName, getSelectedShowId, showData.uploadImage);
 
         // Load all registered shows
         showData
@@ -36,6 +36,14 @@
          * First hide the bottomsheet IF visible, then
          * hide or Show the 'left' sideNav area
          */
+        function getSelectedShowName() {
+            return self.selected.name;
+        }
+        
+        function getSelectedShowId() {
+            return self.selected._id;
+        }
+        
         function toggleShowsList() {
             $mdSidenav('left').toggle();
         }
@@ -68,8 +76,10 @@
             initSaver(true);
         }
         
-        function handleDialogResponse(message) {
-            $log.info(message);
+        function handleDialogResponse(data) {
+            if(data.hasNewImage) {
+                self.selected.image = data.newImageProperties;
+            }
         }
     }
 })();

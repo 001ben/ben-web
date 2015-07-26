@@ -7,6 +7,10 @@ var ShowDetails = function () {
         return element(by.model('ul.selected.name')).getText();
     };
     
+    this.showIcon = function() {
+        return element(by.css('.avatar-container div'));
+    };
+    
     this.showForm = function() {
         return element(by.name('ul.showForm'));
     };

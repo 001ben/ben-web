@@ -122,9 +122,9 @@ describe('ShowController', function () {
             var initialLength = controllerWithForm.shows.length;
             var initialSelected = controllerWithForm.selected;
 
-            expect(controllerWithForm.selected).not.toBe(null);
+            expect(controllerWithForm.selected).not.toBeNull();
             expect(initialLength).toBeGreaterThan(0);
-            expect(controllerWithForm.showForm.$valid).toBe(true);
+            expect(controllerWithForm.showForm.$valid).toBeTruthy();
             
             scope.$apply(function() {
                 controllerWithForm.addShow();
@@ -146,15 +146,15 @@ describe('ShowController', function () {
             expect(showSaver.storeCurrent).toHaveBeenCalled();
             expect(showSaver.initNew).toHaveBeenCalled();
 
-            expect(controllerWithForm.showForm.$valid).toBe(false);
-            expect(controllerWithForm.showForm.name.$valid).toBe(false);
+            expect(controllerWithForm.showForm.$valid).toBeFalsy();
+            expect(controllerWithForm.showForm.name.$valid).toBeFalsy();
 
             scope.$apply(function () {
                 controllerWithForm.showForm.name.$setViewValue('New Show Name');
             });
 
-            expect(controllerWithForm.showForm.$valid).toBe(true);
-            expect(controllerWithForm.showForm.name.$valid).toBe(true);
+            expect(controllerWithForm.showForm.$valid).toBeTruthy();
+            expect(controllerWithForm.showForm.name.$valid).toBeTruthy();
 
             expect(controllerWithForm.selected.name).toBe('New Show Name');
         }));

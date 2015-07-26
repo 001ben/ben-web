@@ -90,14 +90,14 @@ describe('Show Services', function () {
                 showSaver.initShow($form, $scope.test);
             });
 
-            expect(showData.updateShow.calls.any()).toBe(false);
+            expect(showData.updateShow.calls.any()).toBeFalsy();
 
             setViewValue('fieldRequired', 'diff value');
             expect($scope.test.fieldRequired).toEqual('diff value');
 
             setViewValue('fieldRequired', 'a value');
-            expect($form.fieldRequired.$dirty).toBe(true);
-            expect($form.fieldRequired.$valid).toBe(true);
+            expect($form.fieldRequired.$dirty).toBeTruthy();
+            expect($form.fieldRequired.$valid).toBeTruthy();
             expect($scope.test.fieldRequired).toEqual('a value');
 
             $interval.flush(1000);
@@ -107,16 +107,16 @@ describe('Show Services', function () {
             });
             expect($log.error.logs).not.toContain(['Test error']);
 
-            expect($form.fieldRequired.$pristine).toBe(true);
-            expect($form.fieldRequired.$dirty).toBe(false);
+            expect($form.fieldRequired.$pristine).toBeTruthy();
+            expect($form.fieldRequired.$dirty).toBeFalsy();
         }));
 
         it('Should not save until the form is valid', inject(function (showSaver) {
             $scope.$apply(function () {
                 showSaver.initShow($form, $scope.test);
             });
-            expect(showData.updateShow.calls.any()).toBe(false);
-            expect($form.$valid).toBe(false);
+            expect(showData.updateShow.calls.any()).toBeFalsy();
+            expect($form.$valid).toBeFalsy();
 
             $scope.$apply(function () {
                 showSaver.initShow($form, $scope.test);
@@ -125,15 +125,15 @@ describe('Show Services', function () {
             $interval.flush(1000);
 
             expect($log.error.logs).toContain(['attempted initialising while current form invalid']);
-            expect(showData.updateShow.calls.any()).toBe(false);
+            expect(showData.updateShow.calls.any()).toBeFalsy();
 
             setViewValue('field', 'new value');
             $interval.flush(1000);
-            expect($form.$valid).toBe(false);
-            expect(showData.updateShow.calls.any()).toBe(false);
+            expect($form.$valid).toBeFalsy();
+            expect(showData.updateShow.calls.any()).toBeFalsy();
 
             setViewValue('fieldRequired', 'a new value');
-            expect($form.$valid).toBe(true);
+            expect($form.$valid).toBeTruthy();
             $interval.flush(1000);
 
             expect(showData.updateShow).toHaveBeenCalledWith('12345', {
@@ -147,19 +147,19 @@ describe('Show Services', function () {
                 showSaver.initShow($form, $scope.test);
             });
             
-            expect(showData.updateShow.calls.any()).toBe(false);
+            expect(showData.updateShow.calls.any()).toBeFalsy();
 
             setViewValue('field', 'new value');
             expect($scope.test.field).toEqual('new value');
             $interval.flush(1000);
-            expect(showData.updateShow.calls.any()).toBe(false);
-            expect($form.field.$dirty).toBe(true);
+            expect(showData.updateShow.calls.any()).toBeFalsy();
+            expect($form.field.$dirty).toBeTruthy();
             expect($scope.test.field).toEqual('new value');
 
             setViewValue('field', '');
             expect($scope.test.field).toEqual('');
             $interval.flush(1000);
-            expect(showData.updateShow.calls.any()).toBe(false);
+            expect(showData.updateShow.calls.any()).toBeFalsy();
 
             setViewValue('fieldRequired', 'new value');
             $interval.flush(1000);
@@ -178,13 +178,13 @@ describe('Show Services', function () {
                 showSaver.initNew($form, $scope.test);
             });
             
-            expect($form.$invalid).toBe(true);
+            expect($form.$invalid).toBeTruthy();
             expect(showData.updateShow).not.toHaveBeenCalled();
             expect(showData.createShow).not.toHaveBeenCalled();
             
             $interval.flush(1000);
             
-            expect($form.$invalid).toBe(true);
+            expect($form.$invalid).toBeTruthy();
             expect(showData.updateShow).not.toHaveBeenCalled();
             expect(showData.createShow).not.toHaveBeenCalled();
             
@@ -193,7 +193,7 @@ describe('Show Services', function () {
             setViewValue('fieldRequired', 'Valid Value');
             $interval.flush(1000);
             
-            expect($form.$valid).toBe(true);
+            expect($form.$valid).toBeTruthy();
             expect(showData.updateShow).not.toHaveBeenCalled();
             expect(showData.createShow).toHaveBeenCalledWith({
                 _id: testId,
@@ -215,7 +215,7 @@ describe('Show Services', function () {
                 saveResult = showSaver.storeCurrent();
             });
             
-            expect(saveResult).toBe(false);
+            expect(saveResult).toBeFalsy();
             expect($log.error.logs).toContain([ 'Tried saving current before initialisation' ]);
             
             var originalTestObject = $scope.test;
@@ -227,7 +227,7 @@ describe('Show Services', function () {
             });
             
             expect($log.error.logs.length).toBe(0);
-            expect($form.$invalid).toBe(true);
+            expect($form.$invalid).toBeTruthy();
             
             $interval.flush(1000);
             expect(showData.createShow).not.toHaveBeenCalled();
@@ -237,11 +237,11 @@ describe('Show Services', function () {
                 saveResult = showSaver.storeCurrent();
             });
             
-            expect(saveResult).toBe(false);
+            expect(saveResult).toBeFalsy();
             expect($log.error.logs.length).toBe(0);
             
             setViewValue('fieldRequired', 'I am here now');
-            expect($form.$valid).toBe(true);
+            expect($form.$valid).toBeTruthy();
 
             $scope.$apply(function () {
                 showSaver.initNew();
@@ -280,7 +280,7 @@ describe('Show Services', function () {
             });
             
             expect($log.error.logs.length).toBe(0);
-            expect(saveResult).toBe(true);
+            expect(saveResult).toBeTruthy();
         }));
 
         it('Should log http errors as info to the console and resubmit up to 5 times', inject(function (showSaver) {
@@ -294,7 +294,7 @@ describe('Show Services', function () {
             });
 
             showData.validationFailed = true;
-            expect($form.fieldRequired.$dirty).toBe(true);
+            expect($form.fieldRequired.$dirty).toBeTruthy();
             $interval.flush(1000);
             expect($log.info.logs.length).toBe(1);
             expect($log.info.logs).toContain([{
@@ -305,14 +305,14 @@ describe('Show Services', function () {
 
             setViewValue('fieldRequired', 'new value');
 
-            expect($form.fieldRequired.$dirty).toBe(true);
+            expect($form.fieldRequired.$dirty).toBeTruthy();
 
             $interval.flush(1000);
             expect($log.info.logs).toContain([{
                 validationFailed: false
                             }]);
-            expect($form.$dirty).toBe(true);
-            expect($form.fieldRequired.$dirty).toBe(true);
+            expect($form.$dirty).toBeTruthy();
+            expect($form.fieldRequired.$dirty).toBeTruthy();
 
             for (var i = 1; i < 5; i++) {
                 $interval.flush(1000);
@@ -322,7 +322,7 @@ describe('Show Services', function () {
             expect($log.error.logs).toContain(['Attempted to save 5 times unsuccessfully', {
                 validationFailed: false
                             }]);
-            expect($form.fieldRequired.$dirty).toBe(true);
+            expect($form.fieldRequired.$dirty).toBeTruthy();
 
             showData.returnsSuccess = true;
             expect($scope.test.fieldRequired).toEqual('new value');
@@ -332,8 +332,8 @@ describe('Show Services', function () {
 
             $interval.flush(1000);
 
-            expect($form.$dirty).toBe(false);
-            expect($form.fieldRequired.$dirty).toBe(false);
+            expect($form.$dirty).toBeFalsy();
+            expect($form.fieldRequired.$dirty).toBeFalsy();
 
             expect(showData.updateShow).toHaveBeenCalledWith('12345', {
                 field: 'new value',
@@ -366,18 +366,18 @@ describe('Show Services', function () {
                 showSaver.initShow($form, $scope.test);
             });
 
-            expect(showSaver.storeCurrent()).toBe(true);
+            expect(showSaver.storeCurrent()).toBeTruthy();
 
             setViewValue('fieldRequired', 'new value 1');
             setViewValue('fieldRequired', '');
 
-            expect(showSaver.storeCurrent()).toBe(false);
+            expect(showSaver.storeCurrent()).toBeFalsy();
 
             $interval.flush(1000);
-            expect(showData.updateShow.calls.any()).toBe(false);
+            expect(showData.updateShow.calls.any()).toBeFalsy();
 
             setViewValue('fieldRequired', 'new value 1');
-            expect($form.fieldRequired.$dirty).toBe(true);
+            expect($form.fieldRequired.$dirty).toBeTruthy();
 
             showSaver.storeCurrent();
 
@@ -386,7 +386,7 @@ describe('Show Services', function () {
                 form2.field.$setViewValue('new value 2');
             });
 
-            expect(form2.field.$dirty).toBe(true);
+            expect(form2.field.$dirty).toBeTruthy();
             expect(scope2.test.field).toEqual('new value 2');
 
             $interval.flush(1000);

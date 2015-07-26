@@ -93,7 +93,7 @@
         function doCreate(show, retryCount) {
             showData.createShow(show)
                 .success(function (id) {
-                    show._id = id;
+                    currentShowObject._id = id;
                     currentId = id;
                 }).error(handleError(newId, show, retryCount));
         }

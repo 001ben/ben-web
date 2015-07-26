@@ -1,8 +1,10 @@
 var mongo = require('mongodb');
-var showModel = require('./models/shows-model');
 var extend = require('extend');
 var express = require('express');
 var bodyParser = require('body-parser');
+
+var showModel = new (require('./models/shows-model'));
+var showImageModel = new (require('./models/show-image-model'));
 
 var objectId = mongo.ObjectID;
 var mongoUrl = 'mongodb://localhost:27017/shows';
@@ -47,7 +49,7 @@ showJsonApi.post('/update/:id', function (req, res) {
     var showObj;
 
     try {
-        showObj = parseAndValidate(req.body);
+        showObj = parseAndValidate(req.body, showModel);
     } catch (err) {
         sendValidationError(res, err);
         return;
@@ -69,11 +71,42 @@ showJsonApi.post('/update/:id', function (req, res) {
         });
 });
 
+showJsonApi.post('/image/:id', function (req, res) {
+    var id = req.params.id;
+    var imageProperties;
+    try {
+        imageProperties = parseAndValidate(req.body, showImageModel);
+    } catch (err) {
+        sendValidationError(res, err);
+        return;
+    }
+
+    var result = processImage(imageProperties);
+
+    doDatabaseAction(function (shows) {
+            return shows.updateOne({
+                _id: new objectId(id)
+            }, {
+                $set: extend({
+                    image: result
+                }, {
+                    modified: new Date()
+                })
+            });
+        },
+        function () {
+            res.json(result);
+        },
+        function (err) {
+            sendError(res, err);
+        });
+});
+
 showJsonApi.post('/create', function (req, res) {
     var showObj;
 
     try {
-        showObj = parseAndValidate(req.body);
+        showObj = parseAndValidate(req.body, showModel);
     } catch (err) {
         sendValidationError(res, err);
         return;
@@ -97,6 +130,10 @@ exports.doDbAction = doDatabaseAction;
 exports.api = showJsonApi;
 
 /* Internal methods (makes the code above prettier) */
+
+function processImage(styleObject) {
+    return styleObject;
+}
 
 /**
  * This is a dbOperationCallback and is used to execute operations on a mongodb collection.
@@ -146,10 +183,10 @@ function doDatabaseAction(operationHandler, responseHandler, errorHandler) {
 }
 
 /* Validation and Data Integrity */
-function parseAndValidate(jsonShowObj) {
-    jsonShowObj = showModel.parseFields(jsonShowObj);
-    showModel.validateFields(jsonShowObj);
-    return jsonShowObj;
+function parseAndValidate(jsonObj, modelObj) {
+    jsonObj = modelObj.parseFields(jsonObj);
+    modelObj.validateFields(jsonObj);
+    return jsonObj;
 }
 
 /* Error Handling */

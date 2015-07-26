@@ -1,8 +1,32 @@
-<md-dialog>
-    <md-dialog-content>{{icon.message}}!</md-dialog-content>
+<md-dialog aria-label="Icon select dialog">
+    <md-dialog-content class="icon-select-dialog">
+        <div id="icon-select-search" ng-show="icon.currentScreen == icon.screens.search"></div>
+        <div id="icon-select-load" ng-show="icon.currentScreen == icon.screens.load">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div id="icon-select-position" ng-show="icon.currentScreen == icon.screens.position" layout="row" layout-align="center center">
+            <div class="icon-select-avatar-position-container">
+                <div class="avatar-container">
+                    <div ng-style="icon.imageProperties"></div>
+                </div>
+                <div class="icon-select-avatar-container">
+                    <div id="icon-select-draggable" ng-style="icon.imageProperties" touch-action="none"></div>
+                </div>
+            </div>
+            <div class="icon-select-zoombar">
+                <md-slider min="{{icon.minDimension}}" max="{{icon.maxDimension}}" ng-model="icon.scrollDimension" aria-label="image zoom slider"></md-slider>
+            </div>
+        </div>
+    </md-dialog-content>
     <div class="md-actions">
-        <md-button ng-click="icon.close()" class="md-primary">
-            Close Greeting
+        <md-button aria-label="Close Button" ng-click="icon.close()" class="md-primary" ng-hide="icon.currentScreen == icon.screens.load">
+            Close
+        </md-button>
+        <md-button aria-label="Back Button" ng-click="icon.back()" class="md-primary" ng-hide="icon.currentScreen == icon.screens.search">
+            Back
+        </md-button>
+        <md-button aria-label="Accept Button" ng-click="icon.accept()" class="md-primary" ng-show="icon.currentScreen == icon.screens.position">
+            Accept
         </md-button>
     </div>
 </md-dialog>

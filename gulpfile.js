@@ -29,7 +29,7 @@ var jsModules = {
 
 // Set up tasks for sass
 (function() {
-    var srcFiles = 'client-app/scss/*.scss';
+    var srcFiles = 'client-app/scss/app.scss';
     
     gulp.task('sass', GulpSassFunc(srcFiles, false));
     gulp.task('sassdebug', GulpSassFunc(srcFiles, true));
@@ -65,7 +65,7 @@ function GulpJsFunc(glob, outFile, isDebug) {
 function GulpSassFunc(glob, isDebug) {
     function action() {
         var options = isDebug ? {} : { outputStyle: 'compressed' };
-        return gulpSass(options);
+        return gulpSass(options).on('error', gulpSass.logError);
     }
     
     return GulpFunc(glob, 'public-app/css', '.min.css', false, isDebug, action);

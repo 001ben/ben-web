@@ -16,6 +16,9 @@
             },
             createShow: function(showObj) {
                 return $http.post('/shows/create', showObj);
+            },
+            uploadImage: function(showId, imageProperties) {
+                return $http.post('shows/image/' + showId, imageProperties);
             }
         };
     }

@@ -11,11 +11,15 @@ var ShowList = function () {
         return getShows().count();
 	};
     
+    this.showIconAt = function(index) {
+        return element(by.css('md-list:nth-child(' + (index + 1) + ') .avatar-sidebar-container div'));
+    };
+    
     this.selectShow = function(index) {
         getShows().then(function(elements) {
             elements[index].click();
         });
-    }
+    };
 };
 
 module.exports = ShowList;
