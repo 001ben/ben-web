@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require('path');
 
-var publicDirectory = path.join(__dirname, "../public-app");
+var publicDirectory = path.join(__dirname, "../public");
 
 // Now defaults to port 80
 exports.port = process.argv[2] || 80;
