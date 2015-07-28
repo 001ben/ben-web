@@ -313,8 +313,7 @@ md-list-item > .md-button {
   min-width: 134px;
   max-height: 134px;
   max-width: 134px;
-  position: relative;
-  padding-bottom: 30px; }
+  position: relative; }
   .icon-select-avatar-position-container .avatar-container, .icon-select-avatar-position-container .avatar-sidebar-container, .icon-select-avatar-position-container .icon-select-avatar-container {
     position: absolute;
     top: 0;

@@ -378,7 +378,6 @@ $iconAvatarBorderWidth: 3px;
 .icon-select-avatar-position-container {
 		@include square($avatarDimensions + $iconAvatarBorderWidth * 2);
 		position: relative;
-		padding-bottom: 30px;
 		.avatar-container {
 				position: absolute;
 				top: 0;

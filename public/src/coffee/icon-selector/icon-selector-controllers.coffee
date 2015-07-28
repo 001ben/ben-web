@@ -159,6 +159,7 @@ IconSelectorController = ($mdDialog, cseRenderer, $timeout, $scope, decyclicSear
 
 		# Pointer down starts tracking mouse position and registers move and up handlers
 		getImageElement().on 'pointerdown', (event) ->
+			do event.preventDefault
 			currentX = event.pageX
 			currentY = event.pageY
 
@@ -177,6 +178,7 @@ IconSelectorController = ($mdDialog, cseRenderer, $timeout, $scope, decyclicSear
 		return
 
 	moveElement = (event) ->
+		do event.preventDefault
 		moveX = event.pageX - currentX
 		moveY = event.pageY - currentY
 		currentX = event.pageX
@@ -193,6 +195,7 @@ IconSelectorController = ($mdDialog, cseRenderer, $timeout, $scope, decyclicSear
 		return
 
 	scrollElement = (event) ->
+		do event.preventDefault
 		dimensionChange = event.deltaY * zoomSpeed
 		$scope.$apply ->
 			imageDimension.modify(dimensionChange)
