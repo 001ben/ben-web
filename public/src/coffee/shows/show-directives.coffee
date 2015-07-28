@@ -2,7 +2,7 @@ BenEditable = ($mdMedia) ->
 	restrict: 'A'
 	require: 'ngModel'
 	transclude: true
-	template: '<div><span contenteditable tabindex="{{tabindex}}" ng-style="style" data-ph="{{placeholder}}"></span></div><ng-transclude></ng-transclude>'
+	template: '<div><span contenteditable ng-style="style" data-ph="{{placeholder}}"></span></div><ng-transclude></ng-transclude>'
 	scope:
 		modelValue: '=ngModel'
 		tabindex: '='

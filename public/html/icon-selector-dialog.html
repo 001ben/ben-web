@@ -1,10 +1,10 @@
-<md-dialog aria-label="Icon select dialog">
-    <md-dialog-content class="icon-select-dialog">
+<md-dialog class="icon-select-dialog" aria-label="Icon select dialog">
+    <md-dialog-content class="icon-select-dialog-content">
         <div id="icon-select-search" ng-show="icon.currentScreen == icon.screens.search"></div>
         <div id="icon-select-load" ng-show="icon.currentScreen == icon.screens.load">
             <md-progress-circular md-mode="indeterminate"></md-progress-circular>
         </div>
-        <div id="icon-select-position" ng-show="icon.currentScreen == icon.screens.position" layout="row" layout-align="center center">
+        <div id="icon-select-position" ng-show="icon.currentScreen == icon.screens.position" layout="column" layout-align="center center">
             <div class="icon-select-avatar-position-container">
                 <div class="avatar-container">
                     <div ng-style="icon.imageProperties"></div>

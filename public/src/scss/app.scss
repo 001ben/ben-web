@@ -15,94 +15,94 @@ $avatarDimensions: 128px;
 $avatarBorderColor: #d8d8d8;
 
 @mixin zoom($scale) {
-    zoom: $scale;
-    -webkit-transform: scale($scale);
-    -moz-transform: scale($scale);
+		zoom: $scale;
+		-webkit-transform: scale($scale);
+		-moz-transform: scale($scale);
 }
 
 @mixin square($dimension) {
-    height: $dimension;
-    width: $dimension;
-    min-height: $dimension;
-    min-width: $dimension;
-    max-height: $dimension;
-    max-width: $dimension;
+		height: $dimension;
+		width: $dimension;
+		min-height: $dimension;
+		min-width: $dimension;
+		max-height: $dimension;
+		max-width: $dimension;
 }
 
 @mixin filter($action) {
-    -webkit-filter: $action;
-    -moz-filter: $action;
-    -o-filter: $action;
-    -ms-filter: $action;
-    filter: $action;
+		-webkit-filter: $action;
+		-moz-filter: $action;
+		-o-filter: $action;
+		-ms-filter: $action;
+		filter: $action;
 }
 
 /******** Main styles ********/
 
 html,
 body {
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
+		font-family: 'Roboto', sans-serif;
+		font-size: 14px;
+		height: 100%;
+		margin: 0px;
+		padding: 0px;
 }
 
 .menu {
-    background-color: transparent;
-    border: none;
-    height: 38px;
-    margin: 16px;
-    width: 36px;
+		background-color: transparent;
+		border: none;
+		height: 38px;
+		margin: 16px;
+		width: 36px;
 }
 
 md-list {
-    overflow: scroll;
-    height: 90%;
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    .md-button {
-        color: inherit;
-        font-weight: 500;
-        text-align: left;
-        text-overflow: ellipsis;
-        width: 100%;
-    }
-    .md-button.selected {
-        color: #03a9f4;
-    }
+		overflow: scroll;
+		height: 90%;
+		&::-webkit-scrollbar {
+				display: none;
+		}
+		.md-button {
+				color: inherit;
+				font-weight: 500;
+				text-align: left;
+				text-overflow: ellipsis;
+				width: 100%;
+		}
+		.md-button.selected {
+				color: #03a9f4;
+		}
 }
 
 md-sidenav md-list {
-    padding: 0 0 8px 0;
+		padding: 0 0 8px 0;
 }
 
 md-toolbar {
-    & > * {
-        margin-top: auto !important;
-        margin-bottom: auto !important;
-    }
-    h1 {
-        font-size: 1.250em;
-        font-weight: 400;
-    }
+		& > * {
+				margin-top: auto !important;
+				margin-bottom: auto !important;
+		}
+		h1 {
+				font-size: 1.250em;
+				font-weight: 400;
+		}
 }
 
 md-bottom-sheet md-icon {
-    margin-right: 20px;
+		margin-right: 20px;
 }
 
 span.name {
-    font-weight: bold;
-    font-size: 1.1em;
-    padding-left: 5px;
+		font-weight: bold;
+		font-size: 1.1em;
+		padding-left: 5px;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    display: none;
-    margin: 0;
+		display: none;
+		margin: 0;
 }
 
 /******** Body/Content Styles ********/
@@ -110,217 +110,218 @@ input::-webkit-inner-spin-button {
 [ng\:cloak],
 [ng-cloak],
 .ng-cloak {
-    display: none !important;
+		display: none !important;
 }
 
 #content {
-    overflow: hidden;
-    padding-top: 5px;
-    @media #{$sm} {
-        padding-left: 25px;
-        padding-right: 25px;
-    }
-    @media #{"not" $sm} {
-        padding-left: 40px;
-        padding-right: 40px;
-    }
-    .md-button.contact {
-        @include square(48px);
-        background-color: transparent;
-        border: none;
-        margin: 8px auto 16px 0;
-        position: absolute;
-        top: 10px;
-        right: 40px;
-        & > md-icon {
-            fill: black;
-            width: 36px;
-            height: 36px;
-        }
-        &:active > md-icon {
-            background-color: #dadada;
-            border-radius: 75%;
-            padding: 4px;
-            transition: all 100ms ease-out 30ms;
-        }
-    }
-    md-input-container {
-        padding-right: 10px;
-    }
+		overflow: hidden;
+		padding-top: 5px;
+		@media #{$sm} {
+				padding-left: 25px;
+				padding-right: 25px;
+		}
+		@media #{"not" $sm} {
+				padding-left: 40px;
+				padding-right: 40px;
+		}
+		.md-button.contact {
+				@include square(48px);
+				background-color: transparent;
+				border: none;
+				margin: 8px auto 16px 0;
+				position: absolute;
+				top: 10px;
+				right: 40px;
+				& > md-icon {
+						fill: black;
+						width: 36px;
+						height: 36px;
+				}
+				&:active > md-icon {
+						background-color: #dadada;
+						border-radius: 75%;
+						padding: 4px;
+						transition: all 100ms ease-out 30ms;
+				}
+		}
+		md-input-container {
+				padding-right: 10px;
+		}
 }
 
 md-button.menuBtn > md-icon {
-    @include square(24px);
-    fill: white;
+		@include square(24px);
+		fill: white;
 }
 
 .content-wrapper {
-    position: relative;
+		position: relative;
 }
 
 md-sidebar {
-    overflow: hidden;
+		overflow: hidden;
 }
 
 .width {
-    &-15 {
-        width: 15%;
-    }
-    &-33 {
-        width: 33%;
-    }
-    &-50 {
-        width: 50%;
-    }
-    &-75 {
-        width: 75%;
-    }
+		&-15 {
+				width: 15%;
+		}
+		&-33 {
+				width: 33%;
+		}
+		&-50 {
+				width: 50%;
+		}
+		&-75 {
+				width: 75%;
+		}
 }
 
 input.ng-invalid {
-    border-color: $md-red !important;
+		border-color: $md-red !important;
 }
 
 [ben-editable] {
-    &:focus, *:focus {
-        outline: none;
-    }
-    [contenteditable] {
-        border-width: 0 0 2px 0;
-        border-color: $md-fade;
-        border-style: inset;
-        &:empty:not(:focus):before {
-            content: attr(data-ph);
-            color: rgba($md-fade, 0.2);
-        }
-    }
-    &.ng-invalid [contenteditable] {
-        border-color: $md-red;
-    }
-    &:not(.ng-invalid) [contenteditable]:focus {
-        border-color: $md-grey;
-    }
+		&:focus, *:focus {
+				outline: none;
+		}
+		[contenteditable] {
+				border-width: 0 0 2px 0;
+				border-color: $md-fade;
+				border-style: inset;
+				&:empty:not(:focus):before {
+						content: attr(data-ph);
+						color: rgba($md-fade, 0.2);
+				}
+		}
+		&.ng-invalid [contenteditable] {
+				border-color: $md-red;
+		}
+		&:not(.ng-invalid) [contenteditable]:focus {
+				border-color: $md-grey;
+		}
 }
 
 [ng-message] {
-    -webkit-font-smoothing: antialiased;
-    position: absolute;
-    font-size: 12px;
-    line-height: 24px;
-    padding-right: 30px;
-    color: $md-red;
+		-webkit-font-smoothing: antialiased;
+		position: absolute;
+		font-size: 12px;
+		line-height: 24px;
+		padding-right: 30px;
+		color: $md-red;
 }
 
 md-select {
-    padding: 0 !important;
+		padding: 0 !important;
 }
 
 md-select.ng-invalid md-select-label {
-    border-bottom-color: $md-red;
+		border-bottom-color: $md-red;
 }
 
 .ben-novalue {
-    color: rgba($md-fade, 0.26);
+		color: rgba($md-fade, 0.26);
 }
 
 [ben-contenteditable] ng-transclude {
-    display: none;
+		display: none;
 }
 
 md-list-item > .md-button {
-    text-transform: none;
+		text-transform: none;
 }
 
 .md-fab md-icon {
-    vertical-align: middle;
-    height: 100%;
-    .material-icons {
-        line-height: inherit;
-    }
+		vertical-align: middle;
+		height: 100%;
+		.material-icons {
+				line-height: inherit;
+		}
 }
 
 #the-button {
-    position: fixed;
-    bottom: 15px;
-    font-size: 20px;
-    @media #{$sm} {
-        right: 15px;
-    }
-    @media #{"not" $sm} {
-        right: 25px;
-    }
+		position: fixed;
+		bottom: 15px;
+		font-size: 20px;
+		@media #{$sm} {
+				right: 15px;
+		}
+		@media #{"not" $sm} {
+				right: 25px;
+		}
 }
 
 /******** Header/Avatar Styles ********/
 
 .avatar-container {
-    @include square($avatarDimensions);
-    line-height: $avatarDimensions;
-    position: relative;
-    border: 1px solid $avatarBorderColor;
-    border-radius: 50%;
-    display: inline-block;
-    overflow: hidden;
-    margin: 0px;
-    vertical-align: middle;
-    transform: translateZ(0);
-    text-align: center;
-    @media #{$sm} {
-        @include zoom(0.85);
-    }
-    & > div {
-        width: 100%;
-        height: 100%;
-        border-radius: inherit;
-        
-        &.image-hover {
-            @include filter(opacity(40%));
-        }
-    }
+		@include square($avatarDimensions);
+		line-height: $avatarDimensions;
+		position: relative;
+		border: 1px solid $avatarBorderColor;
+		border-radius: 50%;
+		display: inline-block;
+		overflow: hidden;
+		margin: 0px;
+		vertical-align: middle;
+		transform: translateZ(0);
+		text-align: center;
+		@media #{$sm} {
+				@include zoom(0.85);
+		}
+		& > div {
+				width: 100%;
+				height: 100%;
+				border-radius: inherit;
+
+				&.image-hover {
+						@include filter(opacity(40%));
+				}
+		}
 }
 
 .add-image {
-    visibility: hidden;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    &.image-hover {
-        visibility: visible;
-    }
-    md-icon, .material-icons {
-        height: 100%;
-        width: 100%;
-        line-height: inherit;
-        text-align: center;
-    }
-    span {
-        font-size: 48px;
-    }
+		visibility: hidden;
+		cursor: pointer;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 100;
+		&.image-hover {
+				visibility: visible;
+		}
+		md-icon, .material-icons {
+				height: 100%;
+				width: 100%;
+				line-height: inherit;
+				text-align: center;
+		}
+		span {
+				font-size: 48px;
+		}
 }
 
 .avatar-sidebar-container {
-    @extend .avatar-container;
-    @include zoom(0.7);
+		@extend .avatar-container;
+		@include zoom(0.7);
 }
 
 .header {
-    margin-bottom: 20px;
-    &-text {
-        margin: auto 0;
-        vertical-align: middle;
-        @media #{$sm} {
-            font-size: 1.2em;
-        }
-        @media #{"not" $sm} {
-            font-size: 2.5em;
-            margin-left: 20px;
-        }
-    }
-    > * {
-        display: inline-block;
-    }
+		margin-bottom: 20px;
+		&-text {
+				margin: auto 0;
+				vertical-align: middle;
+				@media #{$sm} {
+						font-size: 1.2em;
+						line-height: 1.5em;
+				}
+				@media #{"not" $sm} {
+						font-size: 2.5em;
+						margin-left: 20px;
+				}
+		}
+		> * {
+				display: inline-block;
+		}
 }
 
 // dialog/icon select styles
@@ -329,103 +330,101 @@ $iconDialogPositionHeight: 500px;
 $iconAvatarBorderWidth: 3px;
 
 #icon-select-load {
-    height: 100%;
+		height: 100%;
 }
 
 #icon-select-load md-progress-circular {
-    margin: auto;
+		margin: auto;
 }
 
 #icon-select-position {
-    overflow: hidden;
-    position: relative;
+		overflow: hidden;
+		position: relative;
 }
 
 @media #{$sm} {
-    md-dialog {
-        width: 80%;
-        height: 80%;
-        .icon-select-dialog {
-            width: 100%;
-            height: 100%;
-            #icon-select-position {
-                width: 100%;
-                height: 100%;
-            }
-        }
-    }
+		.icon-select-dialog {
+				max-width: 90%;
+				max-height: 90%;
+				.icon-select-dialog-content {
+						#icon-select-position {
+								width: 100%;
+								height: 100%;
+						}
+				}
+		}
 }
 
 @media #{"not" $sm} {
-    #icon-select-position {
-        width: $iconDialogPositionWidth;
-        height: $iconDialogPositionHeight;
-    }
+		#icon-select-position {
+				width: $iconDialogPositionWidth;
+				height: $iconDialogPositionHeight;
+		}
 }
 
 .icon-select-avatar-container {
-    @extend .avatar-container;
-    overflow: visible;
-    > div {
-        @include filter(opacity(25%));
-        border-radius: initial;
-    }
+		@extend .avatar-container;
+		overflow: visible;
+		> div {
+				@include filter(opacity(25%));
+				border-radius: initial;
+		}
 }
 
 #icon-select-draggable {
-    cursor: move;
+		cursor: move;
 }
 
 .icon-select-avatar-position-container {
-    @include square($avatarDimensions + $iconAvatarBorderWidth * 2);
-    position: relative;
-    .avatar-container {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        border: $iconAvatarBorderWidth solid darken($avatarBorderColor, 10%);
-        > div {
-            border-radius: initial;
-        }
-    }
+		@include square($avatarDimensions + $iconAvatarBorderWidth * 2);
+		position: relative;
+		padding-bottom: 30px;
+		.avatar-container {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				border: $iconAvatarBorderWidth solid darken($avatarBorderColor, 10%);
+				> div {
+						border-radius: initial;
+				}
+		}
 }
 
 .icon-select-zoombar {
-    position: absolute;
-    width: 80%;
-    bottom: 5px;
-    left: 10%;
+		width: 80%;
+		bottom: 5px;
+		left: 10%;
 }
 
 /******** Material Icon Styles ********/
 
 .material-icons {
-    &.md-18 {
-        font-size: 18px;
-    }
-    &.md-24 {
-        font-size: 24px;
-    }
-    &.md-36 {
-        font-size: 36px;
-    }
-    &.md-48 {
-        font-size: 48px;
-    }
-    &.md-60 {
-        font-size: 60px;
-    }
-    &.md-72 {
-        font-size: 72px;
-    }
-    &.md-84 {
-        font-size: 84px;
-    }
-    &.md-dark {
-        color: rgba(0, 0, 0, 0.8);
-    }
-    &.md-center {
-        vertical-align: middle;
-        line-height: normal;
-    }
+		&.md-18 {
+				font-size: 18px;
+		}
+		&.md-24 {
+				font-size: 24px;
+		}
+		&.md-36 {
+				font-size: 36px;
+		}
+		&.md-48 {
+				font-size: 48px;
+		}
+		&.md-60 {
+				font-size: 60px;
+		}
+		&.md-72 {
+				font-size: 72px;
+		}
+		&.md-84 {
+				font-size: 84px;
+		}
+		&.md-dark {
+				color: rgba(0, 0, 0, 0.8);
+		}
+		&.md-center {
+				vertical-align: middle;
+				line-height: normal;
+		}
 }

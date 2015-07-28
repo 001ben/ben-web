@@ -1,6 +1,7 @@
 CseRenderer = ($location) ->
-	cx = '002346021416897782818:ziotcz2o5qa';
-
+	cx = '002346021416897782818:ziotcz2o5qa'
+	cse = null
+	
 	service =
 		initialised: false
 		initialise: (callback) ->

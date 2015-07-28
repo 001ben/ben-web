@@ -2,130 +2,131 @@
 <html lang="en">
 
 <head>
-    <title>Ben's Shows</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width" />
+		<title>Ben's Shows</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width" />
 
-    <link rel="stylesheet" href="dist/css/app.min.css" />
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+		<link rel="stylesheet" href="dist/css/app.min.css" />
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
 </head>
 
 <body ng-app="shows" layout="row" ng-controller="showController as ul">
-    <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" ng-cloak>
-        <md-toolbar layout="row" class="md-whiteframe-z1">
-            <h1 flex="33" offset="33">Shows</h1>
-        </md-toolbar>
+		<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" ng-cloak>
+				<md-toolbar layout="row" class="md-whiteframe-z1">
+						<h1 flex="33" offset="33">Shows</h1>
+				</md-toolbar>
 
-        <md-list>
-            <md-list-item ng-repeat="it in ul.shows" ng-cloak>
-                <md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }" aria-label="Select Show">
-                    <div class="avatar-sidebar-container">
-                        <div ng-style="it.image | extendDefault:'show-image'"></div>
-                    </div>
-                    {{it.name}}
-                </md-button>
-            </md-list-item>
-        </md-list>
-    </md-sidenav>
+				<md-list>
+						<md-list-item ng-repeat="it in ul.shows" ng-cloak>
+								<md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }" aria-label="Select Show">
+										<div class="avatar-sidebar-container">
+												<div ng-style="it.image | extendDefault:'show-image'"></div>
+										</div>
+										{{it.name}}
+								</md-button>
+						</md-list-item>
+				</md-list>
+		</md-sidenav>
 
-    <div flex tabIndex="-1" role="main" class="md-whiteframe-z2" ng-cloak>
-        <md-toolbar layout="row" class="md-whiteframe-z1">
-            <md-button flex="15" class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show List of Shows">
-                <md-icon md-svg-icon="menu"></md-icon>
-            </md-button>
-            <h1 flex offset-gt-sm="30" offset-sm="10">Ben's Shows</h1>
-        </md-toolbar>
+		<div flex role="main" class="md-whiteframe-z2" ng-cloak>
+				<md-toolbar layout="row" class="md-whiteframe-z1">
+						<md-button flex="15" class="menu" hide-gt-sm ng-click="ul.toggleShowsList()" aria-label="Show List of Shows">
+								<md-icon md-svg-icon="menu"></md-icon>
+						</md-button>
+						<h1 flex offset-gt-sm="30" offset-sm="10">Ben's Shows</h1>
+				</md-toolbar>
 
-        <md-content layout="column" layout-padding id="content">
-            <form role="form" name="ul.showForm">
-                <div layout="row" class="header">
-                    <div flex-sm="10" class="avatar-container">
-                        <div class="avatar-image" ng-style="ul.selected.image | extendDefault:'show-image'"></div>
-                        <div class="add-image" ng-click="ul.openIconSelector()">
-                            <md-icon>image</md-icon>
-                        </div>
-                    </div>
+				<md-content layout="column" layout-padding id="content">
+						<form role="form" name="ul.showForm">
+								<div layout="row" class="header">
+										<div flex-sm="10" class="avatar-container">
+												<div class="avatar-image" ng-style="ul.selected.image | extendDefault:'show-image'"></div>
+												<div class="add-image" ng-click="ul.openIconSelector()">
+														<md-icon>image</md-icon>
+												</div>
+										</div>
+										<div name="name" class="header-text" flex offset-sm="5" layout="column" ben-editable watch="ul.selected" placeholder="Show Name" ng-model="ul.selected.name" required>
+												<div flex ng-messages="ul.showForm.name.$error">
+														<div flex ng-message="required">A show name is required</div>
+												</div>
+										</div>
+								</div>
+								<div layout>
+										<md-input-container flex-sm="40" flex-gt-sm="30">
+											<md-select name="filmType" ng-model="ul.selected.filmType" ng-class="{ 'ben-novalue': !ul.selected.filmType }" required>
+													<md-select-label>{{ ul.selected.filmType || 'Film Type' }}</md-select-label>
+													<md-option ng-value="type" ng-repeat="type in ul.showType">{{ type }}</md-option>
+											</md-select>
+											<div flex ng-messages="ul.showForm.filmType.$error">
+													<div flex ng-message="required">A film type is required</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-sm="60" flex-gt-sm="30">
+											<md-checkbox flex name="watched" ng-model="ul.selected.watched" aria-label="Toggle Finished Watching Show" ng-hide="!ul.selected.filmType">
+												Finished Watching?
+											</md-checkbox>
+										</md-input-container>
+								</div>
+								<div layout ng-hide="ul.selected.filmType != 'seasons'">
+										<md-input-container flex-sm="50" flex-gt-sm="30">
+												<label>Seasons</label>
+												<input type="number" name="seasons" ng-model="ul.selected.seasons">
+												<div flex ng-messages="ul.showForm.seasons.$error">
+														<div flex ng-message="number">Must be a number</div>
+												</div>
+										</md-input-container>
+										<md-input-container flex-sm="50" flex-gt-sm="30">
+												<label>Episodes per Season</label>
+												<input type="number" name="seasonEpisodes" ng-model="ul.selected.seasonEpisodes" number>
+												<div flex ng-messages="ul.showForm.seasonEpisodes.$error">
+														<div flex ng-message="number">Must be a number</div>
+												</div>
+										</md-input-container>
+								</div>
+								<div layout ng-hide="!ul.selected.filmType">
+										<md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="ul.selected.filmType != 'episodes'">
+												<label>Episodes</label>
+												<input type="number" name="episodes" ng-model="ul.selected.episodes">
+												<div flex ng-messages="ul.showForm.episodes.$error">
+														<div flex ng-message="number">Must be a number</div>
+												</div>
+										</md-input-container>
+										<md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="ul.selected.watched">
+												<label>Next</label>
+												<input name="next" ng-model="ul.selected.next">
+										</md-input-container>
+								</div>
+								<div layout>
+										<md-input-container flex-sm flex-gt-sm="80">
+												<label>Notes</label>
+												<textarea name="notes" ng-model="ul.selected.notes"></textarea>
+										</md-input-container>
+								</div>
+						</form>
+				</md-content>
+				<div id="the-button">
+						<md-button id="add-button" aria-label="Add Show" class="md-fab md-primary" ng-click="ul.addShow()" role="button">
+								<md-icon>add</md-icon>
+						</md-button>
+				</div>
+		</div>
 
-                    <div name="name" class="header-text" data-tabindex="1" flex-gt-sm="80" flex-sm="50" offset-sm="5" layout="column" ben-editable watch="ul.selected" placeholder="Show Name" ng-model="ul.selected.name" required>
-                        <div flex ng-messages="ul.showForm.name.$error">
-                            <div flex ng-message="required">A show name is required</div>
-                        </div>
-                    </div>
-                    <md-checkbox flex name="watched" ng-model="ul.selected.watched" aria-label="Toggle Finished Watching Show" tabindex="8">
-                        <md-tooltip md-direction="left">Finished Watching?</md-tooltip>
-                    </md-checkbox>
-                </div>
-                <div layout ng-hide="ul.selected.filmType != 'seasons'">
-                    <md-input-container flex-sm="50" flex-gt-sm="30">
-                        <label>Seasons</label>
-                        <input type="number" name="seasons" ng-model="ul.selected.seasons" tabindex="2">
-                        <div flex ng-messages="ul.showForm.seasons.$error">
-                            <div flex ng-message="number">Must be a number</div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container flex-sm="50" flex-gt-sm="30">
-                        <label>Episodes per Season</label>
-                        <input type="number" name="seasonEpisodes" ng-model="ul.selected.seasonEpisodes" tabindex="3" number>
-                        <div flex ng-messages="ul.showForm.seasonEpisodes.$error">
-                            <div flex ng-message="number">Must be a number</div>
-                        </div>
-                    </md-input-container>
-                </div>
-                <div layout ng-hide="!ul.selected.filmType">
-                    <md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="ul.selected.filmType != 'episodes'">
-                        <label>Episodes</label>
-                        <input type="number" name="episodes" ng-model="ul.selected.episodes" tabindex="4">
-                        <div flex ng-messages="ul.showForm.episodes.$error">
-                            <div flex ng-message="number">Must be a number</div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="ul.selected.watched">
-                        <label>Next</label>
-                        <input name="next" ng-model="ul.selected.next" tabindex="5">
-                    </md-input-container>
-                </div>
-                <div layout>
-                    <div flex-sm flex-gt-sm="80">
-                        <md-select name="filmType" ng-model="ul.selected.filmType" ng-class="{ 'ben-novalue': !ul.selected.filmType }" tabindex="6" required>
-                            <md-select-label>{{ ul.selected.filmType || 'Film Type' }}</md-select-label>
-                            <md-option ng-value="type" ng-repeat="type in ul.showType">{{ type }}</md-option>
-                        </md-select>
-                        <div flex ng-messages="ul.showForm.filmType.$error">
-                            <div flex ng-message="required">A film type is required</div>
-                        </div>
-                    </div>
-                </div>
-                <div layout>
-                    <md-input-container flex-sm flex-gt-sm="80">
-                        <label>Notes</label>
-                        <textarea name="notes" ng-model="ul.selected.notes" tabindex="7"></textarea>
-                    </md-input-container>
-                </div>
-            </form>
-        </md-content>
-        <div id="the-button">
-            <md-button id="add-button" aria-label="Add Show" class="md-fab md-primary" ng-click="ul.addShow()" role="button" tabindex="9">
-                <md-icon>add</md-icon>
-            </md-button>
-        </div>
-    </div>
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+		<script src="bower_components/pepjs/dist/pep.min.js"></script>
+		<script src="bower_components/angular/angular.js"></script>
+		<script src="bower_components/angular-animate/angular-animate.js"></script>
+		<script src="bower_components/angular-messages/angular-messages.js"></script>
+		<script src="bower_components/angular-aria/angular-aria.js"></script>
 
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
-    <script src="bower_components/pepjs/dist/pep.min.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-messages/angular-messages.js"></script>
-    <script src="bower_components/angular-aria/angular-aria.js"></script>
+		<script src="bower_components/angular-material/angular-material.js"></script>
 
-    <script src="bower_components/angular-material/angular-material.js"></script>
-
-    <script src="dist/js/icon-selector.all.min.js"></script>
-    <script src="dist/js/shows.all.min.js"></script>
+		<script src="dist/js/icon-selector.all.min.js"></script>
+		<script src="dist/js/shows.all.min.js"></script>
 </body>
 
 </html>
