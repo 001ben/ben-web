@@ -46,14 +46,11 @@ var appModules = {
 
 // Default task runs all js tasks then runs sass and watches all
 gulp.task('default', jsTaskNames(true).concat(['sassdebug', 'watch']));
-gulp.task('preprod', ['cleanmaps', 'sass'].concat(jsTaskNames()));
+gulp.task('preprod', ['sass'].concat(jsTaskNames()));
 
 gulp.task('watch', function () {
     gulp.watch('public/src/scss/*.scss', ['sassdebug']);
     watchappModules();
-});
-gulp.task('cleanmaps', function (cb) {
-    del('public-app/maps', cb);
 });
 
 /*************************
