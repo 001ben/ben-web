@@ -19,13 +19,13 @@
         </div>
     </md-dialog-content>
     <div class="md-actions">
-        <md-button aria-label="Close Button" ng-click="icon.close()" class="md-primary" ng-hide="icon.currentScreen == icon.screens.load">
+        <md-button id="icon-select-close" aria-label="Close Button" ng-click="icon.close()" class="md-primary" ng-hide="icon.currentScreen == icon.screens.load">
             Close
         </md-button>
-        <md-button aria-label="Back Button" ng-click="icon.back()" class="md-primary" ng-hide="icon.currentScreen == icon.screens.search">
+        <md-button id="icon-select-back" aria-label="Back Button" ng-click="icon.back()" class="md-primary" ng-hide="icon.currentScreen == icon.screens.search">
             Back
         </md-button>
-        <md-button aria-label="Accept Button" ng-click="icon.accept()" class="md-primary" ng-show="icon.currentScreen == icon.screens.position">
+        <md-button id="icon-select-accept" aria-label="Accept Button" ng-click="icon.accept()" class="md-primary" ng-show="icon.currentScreen == icon.screens.position">
             Accept
         </md-button>
     </div>
