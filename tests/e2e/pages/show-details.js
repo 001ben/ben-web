@@ -8,7 +8,7 @@ var ShowDetails = function () {
     };
     
     this.showIcon = function() {
-        return element(by.css('.avatar-container div'));
+        return element(by.className('avatar-image'));
     };
     
     this.showForm = function() {

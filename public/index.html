@@ -24,7 +24,7 @@
 						<md-list-item ng-repeat="it in ul.shows" ng-cloak>
 								<md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }" aria-label="Select Show">
 										<div class="avatar-sidebar-container">
-												<div ng-style="it.image | extendDefault:'show-image'"></div>
+												<div class="avatar-sidebar-image" ng-style="it.image | extendDefault:'show-image'"></div>
 										</div>
 										{{it.name}}
 								</md-button>

@@ -1,25 +1,23 @@
 var ShowList = function () {
-	var getShows = function() {
-        return element.all(by.css('md-list-item'));
-    };
-    
-    this.loadAll = function () {
+	this.getShows = function () {
+		return element.all(by.css('md-list-item'));
+	};
+
+	this.loadAll = function () {
 		browser.get('/#');
 	};
-    
+
 	this.count = function () {
-        return getShows().count();
+		return this.getShows().count();
 	};
-    
-    this.showIconAt = function(index) {
-        return element(by.css('md-list:nth-child(' + (index + 1) + ') .avatar-sidebar-container div'));
-    };
-    
-    this.selectShow = function(index) {
-        getShows().then(function(elements) {
-            elements[index].click();
-        });
-    };
+
+	this.showIconAt = function (index) {
+		return element(by.css('md-list-item:nth-child(' + (index + 1) + ') .avatar-sidebar-image'));
+	};
+
+	this.selectShow = function (index) {
+		this.getShows().get(index).click();
+	};
 };
 
 module.exports = ShowList;
