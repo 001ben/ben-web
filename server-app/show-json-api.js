@@ -1,30 +1,31 @@
-var mongo = require('mongodb');
+var mongoose = require('mongoose');
 var extend = require('extend');
 var express = require('express');
 var bodyParser = require('body-parser');
 
-var showModel = new (require('./models/shows-model'));
-var showImageModel = new (require('./models/show-image-model'));
-
-var objectId = mongo.ObjectID;
-var mongoUrl = 'mongodb://localhost:27017/shows';
+var Show = require('./models/shows-model');
+var ShowImage = require('./models/show-image-model').model;
 
 var showJsonApi = express.Router();
 
-/* Helpers */
+/* connection details */
+var mongoUrl = 'mongodb://localhost:27017/';
+var dbName = 'shows';
 
-var collection = 'shows';
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
-function openDb() {
-    return mongo.connect(mongoUrl);
+function openDb(cb) {
+	mongoose.connection.once('open', function () {
+		cb(function () {
+			mongoose.connection.close();
+		});
+	});
+
+	mongoose.connect(mongoUrl + dbName);
 }
 
-function overrideCollection(collectionName) {
-    collection = collectionName;
-}
-
-function getCollection(db) {
-    return db.collection(collection);
+function overrideDbName(overrideDbName) {
+	dbName = overrideDbName;
 }
 
 /* API Logic */
@@ -32,187 +33,120 @@ showJsonApi.use('/', bodyParser.json());
 
 /* Request Handling, the fun part */
 showJsonApi.get('/', function (req, res) {
-
-    doDatabaseAction(function (shows) {
-        return shows.find().sort({
-            modified: -1
-        }).toArray();
-    }, function (data) {
-        res.json(data);
-    }, function (err) {
-        sendError(res, err);
-    });
+	openDb(function (end) {
+		Show.find()
+			.sort('-modified')
+			.exec(function (err, data) {
+				if (err != null) {
+					sendError(res, err);
+				} else {
+					res.json(data);
+				}
+				end();
+			});
+	});
 });
 
 showJsonApi.post('/update/:id', function (req, res) {
-    var id = req.params.id;
-    var showObj;
-
-    try {
-        showObj = parseAndValidate(req.body, showModel);
-    } catch (err) {
-        sendValidationError(res, err);
-        return;
-    }
-
-    doDatabaseAction(function (shows) {
-            return shows.updateOne({
-                _id: new objectId(id)
-            }, {
-                $set: extend(showObj, {
-                    modified: new Date()
-                })
-            });
-        }, function () {
-            res.end();
-        },
-        function (err) {
-            sendError(res, err);
-        });
+	openDb(function (end) {
+		Show.findById(req.params.id, function (err, s) {
+			if (err) {
+				sendError(res, err);
+				end();
+			} else {
+				s.update(req.body, {
+					runValidators: true
+				}, function (err) {
+					if (err) {
+						sendError(res, err);
+					} else {
+						res.end();
+					}
+					end();
+				});
+			}
+		});
+	});
 });
 
 showJsonApi.post('/image/:id', function (req, res) {
-    var id = req.params.id;
-    var imageProperties;
-    try {
-        imageProperties = parseAndValidate(req.body, showImageModel);
-    } catch (err) {
-        sendValidationError(res, err);
-        return;
-    }
+	var image = new ShowImage(req.body);
+	image.validate(function (err) {
+		if (err) sendError(res, err);
+		else {
+			image = processImage(image);
 
-    var result = processImage(imageProperties);
-
-    doDatabaseAction(function (shows) {
-            return shows.updateOne({
-                _id: new objectId(id)
-            }, {
-                $set: extend({
-                    image: result
-                }, {
-                    modified: new Date()
-                })
-            });
-        },
-        function () {
-            res.json(result);
-        },
-        function (err) {
-            sendError(res, err);
-        });
+			openDb(function (end) {
+				Show.findById(req.params.id, function (err, doc) {
+					if (err) {
+						sendError(res, err);
+						end();
+					} else {
+						doc.image = [image];
+						doc.save(function (err) {
+							if (err) sendError(res, err);
+							else {
+								res.json([image]);
+							}
+							end();
+						});
+					}
+				});
+			});
+		}
+	});
 });
 
 showJsonApi.post('/create', function (req, res) {
-    var showObj;
-
-    try {
-        showObj = parseAndValidate(req.body, showModel);
-    } catch (err) {
-        sendValidationError(res, err);
-        return;
-    }
-
-    doDatabaseAction(function (shows) {
-            return shows.insertOne(extend(showObj, {
-                modified: new Date()
-            }));
-        },
-        function (result) {
-            res.json(result.ops[0]._id);
-        },
-        function (err) {
-            sendError(res, err);
-        });
+	openDb(function (end) {
+		new Show(req.body).save(function (err, s) {
+			if (err != null) {
+				sendError(res, err);
+			} else {
+				res.json(s._id);
+			}
+			end();
+		});
+	});
 });
 
-exports.setCollection = overrideCollection;
-exports.doDbAction = doDatabaseAction;
+exports.setDbName = overrideDbName;
+exports.openDb = openDb;
 exports.api = showJsonApi;
 
-/* Internal methods (makes the code above prettier) */
+// for testing
+//var app = express();
+//app.use('/', showJsonApi);
+//app.listen(8787);
 
+/* Image processing */
 function processImage(styleObject) {
-    return styleObject;
-}
-
-/**
- * This is a dbOperationCallback and is used to execute operations on a mongodb collection.
- *
- * @callback databaseOperationCallback
- * @param {Collection} Mongo Collection to perform operations on
- * @returns {Promise}
- */
-/**
- * The dbResponseCallback is used to process the result of a databaseOperationCallback
- *
- * @callback dbResponseCallback
- * @param {Object} Result of the databaseOperationCallback
- */
-/**
- * The errorHandler callback is used to process errors for connecting, or the error of a databaseOperationCallback
- *
- * @callback errorHandler
- * @param {Object} Error object
- */
-
-/**
- * Opens a database connection, performs an operation then handles the response.
- *
- * @param {dbOperationCallback} operationHandler - Should return the promise of the operation performed
- * @param {dbResponseCallback} responseHandler - Handles data returned by the operationHandler.
- * @param {errorHandler} errorHandler - Handles errors that occur at any level.
- */
-function doDatabaseAction(operationHandler, responseHandler, errorHandler) {
-    var db;
-    openDb()
-        .then(function (_db_) {
-            db = _db_;
-            var collection = getCollection(db);
-            return !operationHandler ? this : operationHandler(collection);
-        })
-        .then(function (data) {
-            db.close();
-            if (responseHandler)
-                responseHandler(data);
-        })
-        .catch(function (err) {
-            db.close();
-            if (errorHandler)
-                errorHandler(err);
-        });
-}
-
-/* Validation and Data Integrity */
-function parseAndValidate(jsonObj, modelObj) {
-    jsonObj = modelObj.parseFields(jsonObj);
-    modelObj.validateFields(jsonObj);
-    return jsonObj;
+	return styleObject;
 }
 
 /* Error Handling */
 var defaultError = 'An error occurred while performing a database operation';
 
 function appError(error, friendlyError) {
-    error = error || defaultError;
-    friendlyError = friendlyError || defaultErr;
-    friendlyError = friendlyError === true ? error : '';
+	error = error || defaultError;
+	friendlyError = friendlyError || defaultError;
 
-    return {
-        error: error,
-        friendlyError: friendlyError
-    };
+	return {
+		error: error,
+		friendlyError: friendlyError
+	};
 }
 
 function validationError(error) {
-    return extend(error, {
-        validationFailed: true
-    });
+	return extend(error, {
+		validationFailed: true
+	});
 }
 
 function sendError(res, err, friendlyErr) {
-    res.status(500).json(appError(err, friendlyErr));
+	res.status(500).json(appError(err, friendlyErr));
 }
 
 function sendValidationError(res, error) {
-    res.status(500).json(validationError(error));
+	res.status(500).json(validationError(error));
 }

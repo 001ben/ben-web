@@ -7,7 +7,7 @@ var imageDirectory = path.join(__dirname, "../public/assets/show-images");
 
 // Instruct clients to cache images sent for 3 hours
 baseApp.serverApp.use('/assets/show-images', express.static(imageDirectory, {
-    maxage: '3h'
+	maxage: '3h'
 }));
 
 // Set up show api for data requests

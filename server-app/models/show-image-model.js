@@ -1,28 +1,20 @@
-var baseModel = require('./base-model');
+var mongoose = require('mongoose');
 
-function requiresVal(val) {
-    return val ? true : false;    
-}
+var showImageSchema = new mongoose.Schema({
+	'background-image': {
+		type: String,
+		required: true
+	},
+	'background-size': String,
+	'background-position': String,
+	'background-repeat': String,
+	'border-radius': String,
+	height: String,
+	width: String,
+	top: String,
+	left: String,
+	position: String
+});
 
-function showImageModel() {
-    this.fields = {
-        'background-image': '',
-        'background-size': '',
-        'background-position': '',
-        'background-repeat': '',
-        'border-radius': '',
-        height: '',
-        width: '',
-        top: '',
-        left: '',
-        position: ''
-    };
-    
-    this.validation = {
-        'background-image': requiresVal,
-    }
-}
-
-showImageModel.prototype = new baseModel();
-
-module.exports = showImageModel;
+module.exports.schema = showImageSchema;
+module.exports.model = mongoose.model('ShowImage', showImageSchema);

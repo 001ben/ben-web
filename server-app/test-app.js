@@ -1,42 +1,51 @@
 var showJsonApi = require('./show-json-api');
 var baseApp = require('./base-app');
 var jsonFile = require('jsonfile');
+var Show = require('./models/shows-model');
 
-showJsonApi.setCollection('testShows');
+showJsonApi.setDbName('testShows');
 
 var mockData = jsonFile.readFileSync('./tests/mock-data/shows.json');
 
-function resetShows(testShows) {
-    return testShows.count()
-        .then(function (count) {
-            if (count)
-                return testShows.drop();
-            else
-                return this;
-        }).then(function () {
-            return testShows.insertMany(mockData);
-        });
+function resetShows(res) {
+	showJsonApi.openDb(function (end) {
+		Show.remove({}, function (err) {
+			if (err) {
+				console.log(err);
+				if(res) res.end();
+				end();
+			} else {
+				Show.create(mockData, function (err) {
+					if (err) console.log(err);
+					if(res) res.end();
+					end();
+				});
+			}
+		});
+	});
 }
 
-function countShows(testShows) {
-    return testShows.count();
+function countShows(res) {
+	showJsonApi.openDb(function (end) {
+		Show.count({}, function(err, count) {
+			res.json(count);
+			end();
+		});
+	});
 }
 
 function dbActionError(err) {
-    console.log(err);
+	console.log(err);
 }
 
 // Reset testShows on startup
-showJsonApi.doDbAction(resetShows, null, dbActionError);
+resetShows();
 showJsonApi.api.get('/reset', function (req, res) {
-    showJsonApi.doDbAction(resetShows, function () {
-        res.end();
-    }, dbActionError);
+	resetShows(res);
 });
+
 showJsonApi.api.get('/count', function (req, res) {
-    showJsonApi.doDbAction(countShows, function (count) {
-        res.json(count);
-    }, dbActionError);
+	countShows(res);
 });
 
 // Use this for testing

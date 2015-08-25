@@ -24,7 +24,7 @@
 						<md-list-item ng-repeat="it in ul.shows" ng-cloak>
 								<md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }" aria-label="Select Show">
 										<div class="avatar-sidebar-container">
-												<div class="avatar-sidebar-image" ng-style="it.image | extendDefault:'show-image'"></div>
+												<div class="avatar-sidebar-image" ng-style="it.image[0] | extendDefault:'show-image'"></div>
 										</div>
 										{{it.name}}
 								</md-button>
@@ -44,7 +44,7 @@
 						<form role="form" name="ul.showForm">
 								<div layout="row" class="header">
 										<div flex-sm="10" class="avatar-container">
-												<div class="avatar-image" ng-style="ul.selected.image | extendDefault:'show-image'"></div>
+												<div class="avatar-image" ng-style="ul.selected.image[0] | extendDefault:'show-image'"></div>
 												<div class="add-image" ng-click="ul.openIconSelector()">
 														<md-icon>image</md-icon>
 												</div>
@@ -56,7 +56,7 @@
 										</div>
 								</div>
 								<div layout>
-										<md-input-container flex-sm="40" flex-gt-sm="30">
+										<md-input-container flex="40" flex-gt-md="30">
 											<md-select name="filmType" ng-model="ul.selected.filmType" ng-class="{ 'ben-novalue': !ul.selected.filmType }" required>
 													<md-select-label>{{ ul.selected.filmType || 'Film Type' }}</md-select-label>
 													<md-option ng-value="type" ng-repeat="type in ul.showType">{{ type }}</md-option>
@@ -65,21 +65,21 @@
 													<div flex ng-message="required">A film type is required</div>
 											</div>
 										</md-input-container>
-										<md-input-container flex-sm="60" flex-gt-sm="30">
+										<md-input-container flex-sm="60" flex-md="70" flex-gt-md="30">
 											<md-checkbox flex name="watched" ng-model="ul.selected.watched" aria-label="Toggle Finished Watching Show" ng-hide="!ul.selected.filmType">
 												Finished Watching?
 											</md-checkbox>
 										</md-input-container>
 								</div>
 								<div layout ng-hide="ul.selected.filmType != 'seasons'">
-										<md-input-container flex-sm="50" flex-gt-sm="30">
+										<md-input-container flex-sm="50" flex-md="40" flex-gt-md="30">
 												<label>Seasons</label>
 												<input type="number" name="seasons" ng-model="ul.selected.seasons">
 												<div flex ng-messages="ul.showForm.seasons.$error">
 														<div flex ng-message="number">Must be a number</div>
 												</div>
 										</md-input-container>
-										<md-input-container flex-sm="50" flex-gt-sm="30">
+										<md-input-container flex-sm="50" flex-md="40" flex-gt-md="30">
 												<label>Episodes per Season</label>
 												<input type="number" name="seasonEpisodes" ng-model="ul.selected.seasonEpisodes" number>
 												<div flex ng-messages="ul.showForm.seasonEpisodes.$error">

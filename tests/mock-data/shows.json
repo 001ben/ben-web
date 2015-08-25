@@ -1,19 +1,14 @@
 [{
-    "name": "Test Show 1",
-    "image": {},
-    "episodes": 6,
-    "filmType":"episodes",
-    "modified": "2015-07-21T13:16:42.628Z"
+	"name": "Test Show 1",
+	"episodes": 35,
+	"filmType": "episodes"
 }, {
-    "name": "Test Show 2",
-    "image": {},
-    "episodes": 3,
-    "filmType":"show",
-    "modified": "2015-07-21T13:15:42.628Z"
+	"name": "Test Show 2",
+	"season": 4,
+	"seasonEpisodes": 12,
+	"filmType": "seasons"
 }, {
-    "name": "Test Show 3",
-    "image": {},
-    "episodes": 10,
-    "filmType":"movie",
-    "modified": "2015-07-21T13:14:42.628Z"
+	"name": "Test Show 3",
+	"watched": true,
+	"filmType": "movie"
 }]

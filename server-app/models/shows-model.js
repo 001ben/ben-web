@@ -1,25 +1,34 @@
-var baseModel = require('./base-model');
+var mongoose = require('mongoose');
+var showImageSchema = require('./show-image-model').schema;
 
-function showsModel() {
-    this.fields = {
-        name: '',
-        image: {},
-        notes: '',
-        episodes: 0,
-        next: '',
-        filmType: '',
-        seasons: 0,
-        seasonEpisodes: 0,
-        watched: false
-    };
-    
-    this.validation = {
-        name: function (value) {
-            return value ? true : false;
-        }
-    };
-}
+// Defining schema using showImage object
+var showSchema = new mongoose.Schema({
+	name: {
+		type: String,
+		required: true
+	},
+	notes: String,
+	episodes: Number,
+	next: String,
+	filmType: String,
+	seasons: Number,
+	seasonEpisodes: Number,
+	watched: Boolean,
+	image: [showImageSchema],
+	modified: Date
+});
 
-showsModel.prototype = new baseModel();
+showSchema.pre('update', function () {
+	this.update({}, {
+		$set: {
+			modified: new Date()
+		}
+	});
+});
 
-module.exports = showsModel;
+showSchema.pre('save', function (next) {
+	this.modified = new Date();
+	next();
+});
+
+module.exports = mongoose.model('Show', showSchema);
