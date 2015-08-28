@@ -8,17 +8,18 @@ exports.port = process.argv[2] || 80;
 
 var app = express();
 
-exports.initialise = function() {
-    // Mount static middleware for all other requests
-    app.use(express.static(publicDirectory));
+exports.initialise = function () {
+	// Mount static middleware for all other requests
+	app.use(express.static(publicDirectory));
 };
 
+exports.publicDir = publicDirectory;
 exports.serverApp = app;
 exports.start = function () {
-    
-    // Start the configured server
-    app.listen(exports.port, function () {
-        console.log("public directory %s", publicDirectory);
-        console.log("listening on port %s", exports.port);
-    });
+
+	// Start the configured server
+	app.listen(exports.port, function () {
+		console.log("public directory %s", publicDirectory);
+		console.log("listening on port %s", exports.port);
+	});
 };

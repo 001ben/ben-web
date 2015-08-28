@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var showImageSchema = require('./show-image-model').schema;
+var userSchema = require('./user').schema;
 
 // Defining schema using showImage object
 var showSchema = new mongoose.Schema({
@@ -15,7 +16,8 @@ var showSchema = new mongoose.Schema({
 	seasonEpisodes: Number,
 	watched: Boolean,
 	image: [showImageSchema],
-	modified: Date
+	modified: Date,
+	user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
 showSchema.pre('update', function () {

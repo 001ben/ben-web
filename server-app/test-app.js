@@ -2,35 +2,27 @@ var showJsonApi = require('./show-json-api');
 var baseApp = require('./base-app');
 var jsonFile = require('jsonfile');
 var Show = require('./models/shows-model');
-
-showJsonApi.setDbName('testShows');
+var everyauth = require('everyauth');
 
 var mockData = jsonFile.readFileSync('./tests/mock-data/shows.json');
 
 function resetShows(res) {
-	showJsonApi.openDb(function (end) {
-		Show.remove({}, function (err) {
-			if (err) {
-				console.log(err);
-				if(res) res.end();
-				end();
-			} else {
-				Show.create(mockData, function (err) {
-					if (err) console.log(err);
-					if(res) res.end();
-					end();
-				});
-			}
-		});
+	Show.remove({}, function (err) {
+		if (err) {
+			console.log(err);
+			if (res) res.end();
+		} else {
+			Show.create(mockData, function (err) {
+				if (err) console.log(err);
+				if (res) res.end();
+			});
+		}
 	});
 }
 
 function countShows(res) {
-	showJsonApi.openDb(function (end) {
-		Show.count({}, function(err, count) {
-			res.json(count);
-			end();
-		});
+	Show.count({}, function (err, count) {
+		res.json(count);
 	});
 }
 
@@ -52,5 +44,6 @@ showJsonApi.api.get('/count', function (req, res) {
 baseApp.port = 8080;
 // Set up show api for data requests
 baseApp.serverApp.use('/shows', showJsonApi.api);
+showJsonApi.connect('testShows');
 baseApp.initialise();
 baseApp.start();

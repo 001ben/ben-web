@@ -13,59 +13,41 @@ var mongoUrl = 'mongodb://localhost:27017/';
 var dbName = 'shows';
 
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-
-function openDb(cb) {
-	mongoose.connection.once('open', function () {
-		cb(function () {
-			mongoose.connection.close();
-		});
-	});
-
-	mongoose.connect(mongoUrl + dbName);
-}
-
-function overrideDbName(overrideDbName) {
-	dbName = overrideDbName;
-}
+mongoose.connection.once('open', function () {
+	console.log('database connection opened at ' + mongoUrl + dbName);
+});
 
 /* API Logic */
 showJsonApi.use('/', bodyParser.json());
 
 /* Request Handling, the fun part */
 showJsonApi.get('/', function (req, res) {
-	openDb(function (end) {
-		Show.find()
-			.sort('-modified')
-			.exec(function (err, data) {
-				if (err != null) {
-					sendError(res, err);
-				} else {
-					res.json(data);
-				}
-				end();
-			});
-	});
+	Show.find()
+		.sort('-modified')
+		.exec(function (err, data) {
+			if (err != null) {
+				sendError(res, err);
+			} else {
+				res.json(data);
+			}
+		});
 });
 
 showJsonApi.post('/update/:id', function (req, res) {
-	openDb(function (end) {
-		Show.findById(req.params.id, function (err, s) {
-			if (err) {
-				sendError(res, err);
-				end();
-			} else {
-				s.update(req.body, {
-					runValidators: true
-				}, function (err) {
-					if (err) {
-						sendError(res, err);
-					} else {
-						res.end();
-					}
-					end();
-				});
-			}
-		});
+	Show.findById(req.params.id, function (err, s) {
+		if (err) {
+			sendError(res, err);
+		} else {
+			s.update(req.body, {
+				runValidators: true
+			}, function (err) {
+				if (err) {
+					sendError(res, err);
+				} else {
+					res.end();
+				}
+			});
+		}
 	});
 });
 
@@ -76,43 +58,37 @@ showJsonApi.post('/image/:id', function (req, res) {
 		else {
 			image = processImage(image);
 
-			openDb(function (end) {
-				Show.findById(req.params.id, function (err, doc) {
-					if (err) {
-						sendError(res, err);
-						end();
-					} else {
-						doc.image = [image];
-						doc.save(function (err) {
-							if (err) sendError(res, err);
-							else {
-								res.json([image]);
-							}
-							end();
-						});
-					}
-				});
+			Show.findById(req.params.id, function (err, doc) {
+				if (err) {
+					sendError(res, err);
+				} else {
+					doc.image = [image];
+					doc.save(function (err) {
+						if (err) sendError(res, err);
+						else {
+							res.json([image]);
+						}
+					});
+				}
 			});
 		}
 	});
 });
 
 showJsonApi.post('/create', function (req, res) {
-	openDb(function (end) {
-		new Show(req.body).save(function (err, s) {
-			if (err != null) {
-				sendError(res, err);
-			} else {
-				res.json(s._id);
-			}
-			end();
-		});
+	new Show(req.body).save(function (err, s) {
+		if (err != null) {
+			sendError(res, err);
+		} else {
+			res.json(s._id);
+		}
 	});
 });
 
-exports.setDbName = overrideDbName;
-exports.openDb = openDb;
 exports.api = showJsonApi;
+exports.connect = function (overrideDbName) {
+	mongoose.connect(mongoUrl + (dbName = (overrideDbName || dbName)));
+};
 
 // for testing
 //var app = express();

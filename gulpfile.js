@@ -20,13 +20,16 @@ var appModules = {
     },
     'icon-selector': {
         paths: [clientAppCoffeeBase + 'icon-selector.coffee', clientAppCoffeeBase + 'icon-selector/*.coffee']
+    },
+    login: {
+        paths: [clientAppCoffeeBase + 'login.coffee']
     }
 };
 
 /*************************
  * Gulp tasks
  *************************/
-(function () {
+(function() {
     for (var m in appModules) {
         var paths = appModules[m].paths;
         var outFile = m + '.all.coffee';
@@ -37,8 +40,8 @@ var appModules = {
 }());
 
 // Set up tasks for sass
-(function () {
-    var srcFiles = clientAppScssBase + 'app.scss';
+(function() {
+    var srcFiles = [clientAppScssBase + 'app.scss', clientAppScssBase + 'login.scss'];
 
     gulp.task('sass', sassFunc(srcFiles, false));
     gulp.task('sassdebug', sassFunc(srcFiles, true));
@@ -48,7 +51,7 @@ var appModules = {
 gulp.task('default', jsTaskNames(true).concat(['sassdebug', 'watch']));
 gulp.task('preprod', ['sass'].concat(jsTaskNames()));
 
-gulp.task('watch', function () {
+gulp.task('watch', function() {
     gulp.watch('public/src/scss/*.scss', ['sassdebug']);
     watchappModules();
 });
@@ -86,7 +89,7 @@ function sassFunc(glob, isDebug) {
 }
 
 function gulpFunc(glob, outFolder, ext, isUglify, action) {
-    return function () {
+    return function() {
         var pipeline = gulp.src(glob)
             .pipe(plumber())
             .pipe(sourcemaps.init());
