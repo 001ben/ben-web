@@ -16,7 +16,7 @@
 
 <body ng-app="shows" layout="row" ng-controller="showController as ul">
 		<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" ng-cloak>
-				<md-toolbar layout="row" class="md-whiteframe-z1">
+				<md-toolbar layout="row" class="md-whiteframe-z1 md-hue-2">
 						<h1 flex="33" offset="33">Shows</h1>
 				</md-toolbar>
 
@@ -33,7 +33,7 @@
 		</md-sidenav>
 
 		<div flex role="main" class="md-whiteframe-z2" ng-cloak>
-				<md-toolbar layout="row" class="md-whiteframe-z1">
+				<md-toolbar layout="row" class="md-whiteframe-z1 md-hue-2">
 						<md-button flex="15" class="menu" hide-gt-sm ng-click="ul.toggleShowsList()" aria-label="Show List of Shows">
 								<md-icon md-svg-icon="menu"></md-icon>
 						</md-button>
@@ -109,7 +109,7 @@
 						</form>
 				</md-content>
 				<div id="the-button">
-						<md-button id="add-button" aria-label="Add Show" class="md-fab md-primary" ng-click="ul.addShow()" role="button">
+						<md-button id="add-button" aria-label="Add Show" class="md-fab md-accent" ng-click="ul.addShow()" role="button">
 								<md-icon>add</md-icon>
 						</md-button>
 				</div>

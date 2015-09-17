@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 
 var Show = require('./models/shows-model');
 var ShowImage = require('./models/show-image-model').model;
+var objectId = mongoose.Types.ObjectId;
 
 var showJsonApi = express.Router();
 
@@ -13,116 +14,143 @@ var mongoUrl = 'mongodb://localhost:27017/';
 var dbName = 'shows';
 
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-mongoose.connection.once('open', function () {
-	console.log('database connection opened at ' + mongoUrl + dbName);
+mongoose.connection.once('open', function() {
+  console.log('database connection opened at ' + mongoUrl + dbName);
 });
 
 /* API Logic */
-showJsonApi.use('/', bodyParser.json());
+showJsonApi
+  .use('/', bodyParser.json())
+  .use(function(req, res, next) {
+    if (!req.user) sendAuthError(res);
+    else next();
+  });
 
 /* Request Handling, the fun part */
-showJsonApi.get('/', function (req, res) {
-	Show.find()
-		.sort('-modified')
-		.exec(function (err, data) {
-			if (err != null) {
-				sendError(res, err);
-			} else {
-				res.json(data);
-			}
-		});
+showJsonApi.get('/', function(req, res) {
+  Show.find({
+      user: req.user._id
+    })
+    .sort('-modified')
+    .exec()
+    .then(function(shows) {
+        res.json(shows);
+      },
+      function(err) {
+        sendAppError(res, err);
+      });
 });
 
-showJsonApi.post('/update/:id', function (req, res) {
-	Show.findById(req.params.id, function (err, s) {
-		if (err) {
-			sendError(res, err);
-		} else {
-			s.update(req.body, {
-				runValidators: true
-			}, function (err) {
-				if (err) {
-					sendError(res, err);
-				} else {
-					res.end();
-				}
-			});
-		}
-	});
+showJsonApi.post('/update/:id', function(req, res) {
+  Show.findOne({
+      _id: req.params.id,
+      user: req.user._id
+    })
+    .exec().then(function(show) {
+      console.log(show);
+
+      if (!show) throw validationError({
+        message: 'The given id did not match any records'
+      });
+      else return show;
+    }).then(function(show) {
+      delete req.body.user;
+      delete image;
+      return show.update(req.body, {
+        runValidators: true
+      }).exec();
+    }).then(
+      function() {
+        res.end();
+      },
+      function(err) {
+        sendAppError(res, err);
+      });
 });
 
-showJsonApi.post('/image/:id', function (req, res) {
-	var image = new ShowImage(req.body);
-	image.validate(function (err) {
-		if (err) sendError(res, err);
-		else {
-			image = processImage(image);
-
-			Show.findById(req.params.id, function (err, doc) {
-				if (err) {
-					sendError(res, err);
-				} else {
-					doc.image = [image];
-					doc.save(function (err) {
-						if (err) sendError(res, err);
-						else {
-							res.json([image]);
-						}
-					});
-				}
-			});
-		}
-	});
+showJsonApi.post('/image/:id', function(req, res) {
+  var image = new ShowImage(req.body);
+  image.validate().then(function() {
+    image = processImage(image);
+    return Show.findOne({
+      _id: req.params.id,
+      user: req.user._id
+    }).exec();
+  }).then(function(data) {
+    if (!data) throw validationError({
+      message: 'The given id did not match any records'
+    });
+    else return data;
+  }).then(function(show) {
+    show.image = [image];
+    return show.save();
+  }).then(
+    function() {
+      res.json([image]);
+    },
+    function(err) {
+      sendAppError(res, err);
+    });
 });
 
-showJsonApi.post('/create', function (req, res) {
-	new Show(req.body).save(function (err, s) {
-		if (err != null) {
-			sendError(res, err);
-		} else {
-			res.json(s._id);
-		}
-	});
+showJsonApi.post('/create', function(req, res) {
+  req.body.user = req.user._id;
+  new Show(req.body)
+    .save()
+    .then(function(show) {
+      res.json(show._id);
+    }, function(err) {
+      sendAppError(res, err);
+    });
 });
 
 exports.api = showJsonApi;
-exports.connect = function (overrideDbName) {
-	mongoose.connect(mongoUrl + (dbName = (overrideDbName || dbName)));
+exports.connect = function(overrideDbName) {
+  mongoose.connect(mongoUrl + (dbName = (overrideDbName || dbName)));
 };
 
-// for testing
-//var app = express();
-//app.use('/', showJsonApi);
-//app.listen(8787);
+// var app = express();
+// app.use('/', showJsonApi);
+// app.listen(8787);
+// console.log('listening');
 
 /* Image processing */
 function processImage(styleObject) {
-	return styleObject;
+  return styleObject;
 }
 
 /* Error Handling */
 var defaultError = 'An error occurred while performing a database operation';
+var defaultAuthError = 'you are not authorized to access this resource, please re-authenticate';
 
-function appError(error, friendlyError) {
-	error = error || defaultError;
-	friendlyError = friendlyError || defaultError;
-
-	return {
-		error: error,
-		friendlyError: friendlyError
-	};
+function sendError(res, code, errorObj) {
+  res.status(code).json(errorObj);
 }
 
-function validationError(error) {
-	return extend(error, {
-		validationFailed: true
-	});
-}
-
-function sendError(res, err, friendlyErr) {
-	res.status(500).json(appError(err, friendlyErr));
+function sendAppError(res, err, friendlyErr) {
+  sendError(res, 500, appError(err, friendlyErr));
 }
 
 function sendValidationError(res, error) {
-	res.status(500).json(validationError(error));
+  sendError(res, 500, validationError(error));
+}
+
+function sendAuthError(res) {
+  sendError(res, 401, defaultAuthError, defaultAuthError);
+}
+
+function appError(error, friendlyError) {
+  error = error || defaultError;
+  friendlyError = friendlyError || defaultError;
+
+  return {
+    error: error,
+    friendlyError: friendlyError
+  };
+}
+
+function validationError(error) {
+  return extend(error, {
+    validationFailed: true
+  });
 }

@@ -1,7 +1,7 @@
 ConfigurationLogic = ($mdThemingProvider) ->
 	$mdThemingProvider
 		.theme 'default'
-		.primaryPalette 'blue-grey'
+		.primaryPalette 'grey'
 		.accentPalette 'blue'
 
 	return

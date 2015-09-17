@@ -1,10 +1,8 @@
 var express = require('express');
 var path = require('path');
+var config = require('./config');
 
 var publicDirectory = path.join(__dirname, "../public");
-
-// Now defaults to port 80
-exports.port = process.argv[2] || 80;
 
 var app = express();
 
@@ -18,8 +16,8 @@ exports.serverApp = app;
 exports.start = function () {
 
 	// Start the configured server
-	app.listen(exports.port, function () {
+	app.listen(config.port, function () {
 		console.log("public directory %s", publicDirectory);
-		console.log("listening on port %s", exports.port);
+		console.log("listening on port %s", config.port);
 	});
 };

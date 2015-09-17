@@ -12,11 +12,18 @@ ShowController = (showData, showSaver, showType, iconSelectorService, $mdSidenav
 		.loadAllShows()
 		.success (shows) ->
 			self.shows = [].concat(shows)
-			self.selected = shows[0]
+			anyShows = shows.length > 0
+			if anyShows
+				self.selected = shows[0]
+			else
+				s = {}
+				self.shows.unshift s
+				self.selected = s
+
 			self.loading = false
-			do initSaver
+			initSaver !anyShows
 			return
-	
+
 	###
 	 Controller methods
 	###
@@ -41,7 +48,7 @@ ShowController = (showData, showSaver, showType, iconSelectorService, $mdSidenav
 		self.selected = newShow
 		initSaver true
 		return
-	
+
 	@openIconSelector = iconSelectorService.getShowSelector(
 		(data) ->
 			self.selected.image = data.newImageProperties if data.hasNewImage
@@ -51,7 +58,7 @@ ShowController = (showData, showSaver, showType, iconSelectorService, $mdSidenav
 		, ->
 			return self.selected._id
 		, showData.uploadImage)
-	
+
 	###
 	 Internal methods
 	###
@@ -59,11 +66,11 @@ ShowController = (showData, showSaver, showType, iconSelectorService, $mdSidenav
 		funcName = 'init' + if isNew then 'New' else 'Show'
 
 		showSaver[funcName] self.showForm, self.selected
-	
+
 		do self.showForm.$setPristine
 		do self.showForm.$setUntouched
 		return
-	
+
 	return
 
 angular.module 'shows'

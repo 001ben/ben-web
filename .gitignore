@@ -8,3 +8,4 @@ tmp
 app/jspm_packages
 **/.sass-cache/*
 **/*.map
+npm-debug.log

@@ -1,14 +1,21 @@
-$theme-blue-grey: rgb(96,125,139);
-$shadow-grey: #888;
+$background-grey: #EEE;
+$md-accent-color: rgb(68,138,255);
+$image-minimum: 3em;
+$image-margin: 9px;
+$login-banner-margin: 7%;
 
-#main-frame {
-  background-color: $theme-blue-grey;
-  box-shadow: -6px 0 7px $shadow-grey;
-  color: white;
+body {
+  background-color: $background-grey;
 }
 
-#header-block {
-  height:33%;
+#main-frame {
+  background-color: white;
+}
+
+#login-banner {
+  margin-top: $login-banner-margin;
+  font-family: 'Roboto Slab', 'Roboto', 'Helvetica Neue', sans-serif;
+  border-bottom: 3px solid adjust-hue($md-accent-color, 20%);
 }
 
 h1, a {
@@ -17,4 +24,10 @@ h1, a {
 
 login-divider {
   width: 100%;
+}
+
+.made-with-technologies > img {
+  margin: $image-margin;
+  height: $image-minimum;
+  width: auto;
 }
