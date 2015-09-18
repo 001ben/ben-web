@@ -6,6 +6,7 @@ var googleStrategy = require('passport-google-auth').Strategy;
 var path = require('path');
 var passport = require('passport');
 var showJsonApi = require('./show-json-api');
+var path = require('path');
 
 var User = require('./models/user').model;
 
@@ -93,7 +94,7 @@ baseApp.serverApp
  * Routing
  *************************/
 baseApp.serverApp.get('/login', function(req, res) {
-  var file = baseApp.publicDir + '\\html\\login.html';
+  var file = path.resolve(baseApp.publicDir, 'html/login.html');
   res.type('html');
   res.status(200).sendFile(file);
 });
