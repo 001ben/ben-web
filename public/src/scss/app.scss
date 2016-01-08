@@ -324,6 +324,28 @@ md-list-item > .md-button {
 		}
 }
 
+.text-select {
+	.md-select-label {
+		border-bottom: none !important;
+		color: inherit !important;
+		*:first-child {
+			text-overflow: clip;
+			max-width: none;
+			overflow: auto;
+		}
+	}
+
+	.md-select-icon {
+		display: none;
+	}
+}
+
+#orderByAscending {
+	border-left:1px solid gray;
+	text-align:center;
+	cursor: pointer
+}
+
 // dialog/icon select styles
 $iconDialogPositionWidth: 600px;
 $iconDialogPositionHeight: 500px;

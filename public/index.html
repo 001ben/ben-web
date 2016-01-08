@@ -8,20 +8,26 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width" />
 
-		<link rel="stylesheet" href="/dist/css/app.min.css" />
 		<link rel="stylesheet" href="/assets/fonts/roboto-fonts.css">
 		<link rel="stylesheet" href="/assets/icons/material-icons.css">
 		<link rel="stylesheet" href="/bower_components/angular-material/angular-material.css" />
+		<link rel="stylesheet" href="/dist/css/app.min.css" />
 </head>
 
 <body ng-app="shows" layout="row" ng-controller="showController as ul">
 		<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" ng-cloak>
 				<md-toolbar layout="row" class="md-whiteframe-z1 md-hue-2">
-						<h1 flex="33" offset="33">Shows</h1>
+						<md-select flex="50" offset="10" ng-model="ul.orderBy" class="text-select" aria-label="select fitler">
+							<md-option ng-repeat="filter in ul.orderByOptions" ng-value="filter[1]">{{filter[0]}}</md-option>
+						</md-select>
+						<h3 id="orderByAscending" flex="25" offset="15" ng-click="ul.invertOrder()">
+							<span ng-if="ul.ascending">&#x25B2;</span>
+							<span ng-if="!ul.ascending">&#x25BC;</span>
+						</h3>
 				</md-toolbar>
 
 				<md-list>
-						<md-list-item ng-repeat="it in ul.shows" ng-cloak>
+						<md-list-item ng-repeat="it in ul.shows | orderBy:ul.orderBy:!ul.ascending track by it._id" ng-cloak>
 								<md-button ng-click="ul.selectShow(it)" ng-class="{'selected' : it === ul.selected }" aria-label="Select Show">
 										<div class="avatar-sidebar-container">
 												<div class="avatar-sidebar-image" ng-style="it.image[0] | extendDefault:'show-image'"></div>
@@ -37,7 +43,7 @@
 						<md-button flex="15" class="menu" hide-gt-sm ng-click="ul.toggleShowsList()" aria-label="Show List of Shows">
 								<md-icon md-svg-icon="menu"></md-icon>
 						</md-button>
-						<h1 flex offset-gt-sm="30" offset-sm="10">Ben's Shows</h1>
+						<h1 flex offset-gt-sm="30" offset-sm="10">My Watchlist</h1>
 				</md-toolbar>
 
 				<md-content layout="column" layout-padding id="content">
@@ -57,7 +63,7 @@
 								</div>
 								<div layout>
 										<md-input-container flex="40" flex-gt-md="30">
-											<md-select name="filmType" ng-model="ul.selected.filmType" ng-class="{ 'ben-novalue': !ul.selected.filmType }" required>
+											<md-select name="filmType" ng-model="ul.selected.filmType" ng-change="ul.onFieldChange()" ng-class="{ 'ben-novalue': !ul.selected.filmType }" required>
 													<md-select-label>{{ ul.selected.filmType || 'Film Type' }}</md-select-label>
 													<md-option ng-value="type" ng-repeat="type in ul.showType">{{ type }}</md-option>
 											</md-select>
@@ -66,7 +72,7 @@
 											</div>
 										</md-input-container>
 										<md-input-container flex-sm="60" flex-md="70" flex-gt-md="30">
-											<md-checkbox flex name="watched" ng-model="ul.selected.watched" aria-label="Toggle Finished Watching Show" ng-hide="!ul.selected.filmType">
+											<md-checkbox flex name="watched" ng-model="ul.selected.watched" ng-change="ul.onFieldChange()" aria-label="Toggle Finished Watching Show" ng-hide="!ul.selected.filmType">
 												Finished Watching?
 											</md-checkbox>
 										</md-input-container>
@@ -74,14 +80,14 @@
 								<div layout ng-hide="ul.selected.filmType != 'seasons'">
 										<md-input-container flex-sm="50" flex-md="40" flex-gt-md="30">
 												<label>Seasons</label>
-												<input type="number" name="seasons" ng-model="ul.selected.seasons">
+												<input type="number" name="seasons" ng-model="ul.selected.seasons" ng-change="ul.onFieldChange()">
 												<div flex ng-messages="ul.showForm.seasons.$error">
 														<div flex ng-message="number">Must be a number</div>
 												</div>
 										</md-input-container>
 										<md-input-container flex-sm="50" flex-md="40" flex-gt-md="30">
 												<label>Episodes per Season</label>
-												<input type="number" name="seasonEpisodes" ng-model="ul.selected.seasonEpisodes" number>
+												<input type="number" name="seasonEpisodes" ng-model="ul.selected.seasonEpisodes" ng-change="ul.onFieldChange()" number>
 												<div flex ng-messages="ul.showForm.seasonEpisodes.$error">
 														<div flex ng-message="number">Must be a number</div>
 												</div>
@@ -90,20 +96,20 @@
 								<div layout ng-hide="!ul.selected.filmType">
 										<md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="ul.selected.filmType != 'episodes'">
 												<label>Episodes</label>
-												<input type="number" name="episodes" ng-model="ul.selected.episodes">
+												<input type="number" name="episodes" ng-model="ul.selected.episodes" ng-change="ul.onFieldChange()">
 												<div flex ng-messages="ul.showForm.episodes.$error">
 														<div flex ng-message="number">Must be a number</div>
 												</div>
 										</md-input-container>
 										<md-input-container flex-sm="50" flex-gt-sm="30" ng-hide="ul.selected.watched">
 												<label>Next</label>
-												<input name="next" ng-model="ul.selected.next">
+												<input name="next" ng-model="ul.selected.next" ng-change="ul.onFieldChange()">
 										</md-input-container>
 								</div>
 								<div layout>
 										<md-input-container flex-sm flex-gt-sm="80">
 												<label>Notes</label>
-												<textarea name="notes" ng-model="ul.selected.notes"></textarea>
+												<textarea name="notes" ng-model="ul.selected.notes" ng-change="ul.onFieldChange()"></textarea>
 										</md-input-container>
 								</div>
 						</form>

@@ -34,7 +34,7 @@
     "winmorning": "start \"Database\" cmd /C \"mongod\" && start \"Server\" cmd /C \"node .\\server-app\\app.js\"",
     "wintest": "start \"Selenium\" cmd /C \"webdriver-manager start\" && start \"Test Server\" cmd /C \"node .\\server-app\\test-app.js\"",
     "windev": "start \"Dev Watch\" cmd /C \"gulp\" && start \"Karma\" cmd /C \"karma start",
-    "spawn": "start \"A Process\" cmd /C"
+    "spawn": "start \"A Process\""
   },
   "dependencies": {
     "body-parser": "^1.13.2",
