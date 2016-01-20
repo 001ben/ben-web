@@ -17,23 +17,28 @@ ShowController = (showData, debouncer, showType, iconSelectorService, $mdSidenav
 
 	fields = {}
 
-	# Load all registered shows
-	showData
-		.loadAllShows()
-		.success (shows) ->
-			for p of self.showForm when p[0] isnt '$'
-				fields[p] = self.showForm[p]
+	# Load all registered shows and order info
+	$q.all [showData.loadAllShows(), showData.loadShowOrder()]
+	.then (data) ->
+		return data.map (element) -> element.data
+	.then (data) ->
+		shows = data[0]
+		for p of self.showForm when p[0] isnt '$'
+			fields[p] = self.showForm[p]
 
-			self.shows = [].concat(shows)
-			if shows.length > 0
-				self.selected = shows[0]
-			else
-				s = {}
-				self.shows.unshift s
-				self.selected = s
+		self.orderBy = data[1].showsOrderedBy ? 'modified'
+		self.ascending = data[1].showsOrderedAscending ? false
 
-			self.loading = false
-			return
+		self.shows = [].concat(shows)
+		if shows.length > 0
+			self.selected = shows[0]
+		else
+			s = {}
+			self.shows.unshift s
+			self.selected = s
+
+		self.loading = false
+		return
 
 	###
 	 Controller methods
@@ -49,7 +54,7 @@ ShowController = (showData, debouncer, showType, iconSelectorService, $mdSidenav
 			debouncer.clear()
 			do saveShow
 		else
-			self.selected = if angular.isNumber(show) then $scope.shows[show] else show
+			self.selected = if angular.isNumber(show) then self.shows[show] else show
 			do self.toggleShowsList
 		return
 
@@ -85,6 +90,10 @@ ShowController = (showData, debouncer, showType, iconSelectorService, $mdSidenav
 		debouncer.start saveShow
 		return
 
+	@onOrderChange = ->
+		showData.updateShowOrder self.orderBy, self.ascending
+		return
+
 	###
 	 Internal methods
 	###
@@ -115,9 +124,9 @@ ShowController = (showData, debouncer, showType, iconSelectorService, $mdSidenav
 		if not changedFields?
 			return
 		else if self.selected._id?
-			showData.updateShow self.selected._id, self.selected
+			showData.updateShow self.selected._id, changedFields
 			.success ->
-				clearFields changedFields
+				do clearFields
 				return
 			.error (err) ->
 				handleSaveError err, changedFields
@@ -125,7 +134,7 @@ ShowController = (showData, debouncer, showType, iconSelectorService, $mdSidenav
 		else
 			showData.createShow self.selected
 			.success (id) ->
-				clearFields changedFields
+				do clearFields
 				self.selected._id = id
 				return
 			.error (err) ->
@@ -133,23 +142,18 @@ ShowController = (showData, debouncer, showType, iconSelectorService, $mdSidenav
 				return
 		return
 
-	clearFields = (fieldsToClear) ->
-		for fieldName of fieldsToClear
-			do self.showForm.$setPristine
-			do self.showForm.$setUntouched
+	clearFields = ->
+		do self.showForm.$setPristine
+		do self.showForm.$setUntouched
 
 	handleSaveError = (err, changedFields) ->
+		# consider adding logic for a user friendly message display
 		$log.info err
 
-		if err.validationFailed is true and currentId is saveId
-			for fieldName of changedFields
-				do self.showForm[fieldName].$setDirty
-				do self.showForm[fieldName].$setTouched
-				do self.showForm[fieldName].$validate
-
+		if err.validationFailed is true
 			debouncer.start saveShow
-		return
 
+		return
 	return
 
 angular.module 'shows'

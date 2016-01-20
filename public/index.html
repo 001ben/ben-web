@@ -17,10 +17,10 @@
 <body ng-app="shows" layout="row" ng-controller="showController as ul">
 		<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" ng-cloak>
 				<md-toolbar layout="row" class="md-whiteframe-z1 md-hue-2">
-						<md-select flex="50" offset="10" ng-model="ul.orderBy" class="text-select" aria-label="select fitler">
-							<md-option ng-repeat="filter in ul.orderByOptions" ng-value="filter[1]">{{filter[0]}}</md-option>
+						<md-select flex="50" offset="10" ng-model="ul.orderBy" class="text-select" aria-label="select filter" ng-change="ul.onOrderChange()">
+							<md-option class="order-by-option" ng-repeat="filter in ul.orderByOptions" ng-value="filter[1]">{{filter[0]}}</md-option>
 						</md-select>
-						<h3 id="orderByAscending" flex="25" offset="15" ng-click="ul.invertOrder()">
+						<h3 id="orderByAscending" flex="25" offset="15" ng-click="ul.invertOrder(); ul.onOrderChange()">
 							<span ng-if="ul.ascending">&#x25B2;</span>
 							<span ng-if="!ul.ascending">&#x25BC;</span>
 						</h3>
@@ -55,7 +55,7 @@
 														<md-icon>image</md-icon>
 												</div>
 										</div>
-										<div name="name" class="header-text" flex offset-sm="5" layout="column" ben-editable watch="ul.selected" placeholder="Show Name" ng-model="ul.selected.name" required>
+										<div name="name" class="header-text" flex offset-sm="5" layout="column" ben-editable watch="ul.selected" placeholder="Show Name" ng-model="ul.selected.name" ng-change="ul.onFieldChange()" required>
 												<div flex ng-messages="ul.showForm.name.$error">
 														<div flex ng-message="required">A show name is required</div>
 												</div>

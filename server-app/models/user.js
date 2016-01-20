@@ -6,7 +6,9 @@ var userSchema = new mongoose.Schema({
     givenName: String,
     familyName: String,
     middleName: String
-  }
+  },
+  showsOrderedBy: String,
+  showsOrderedAscending: Boolean
 });
 
 mongoose.model('User', userSchema);

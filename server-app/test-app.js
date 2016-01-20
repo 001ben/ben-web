@@ -25,10 +25,12 @@ function resetData(res) {
     .then(function(user) {
       var newShows = [];
       var extendWith = {
-        user: user._id
+        user: user[0]._id
       };
       for (var i in mockShows) {
-        newShows.push(extend({}, mockShows[i], extendWith));
+        var newShow = extend({}, mockShows[i], extendWith);
+        delete newShow._id;
+        newShows.push(newShow);
       }
       return Show.create(newShows);
     })

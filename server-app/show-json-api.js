@@ -41,14 +41,31 @@ showJsonApi.get('/', function(req, res) {
       });
 });
 
+showJsonApi.get('/order', function(req, res) {
+  res.json({
+    showsOrderedBy: req.user.showsOrderedBy,
+    showsOrderedAscending: req.user.showsOrderedAscending
+   });
+});
+
+showJsonApi.post('/updateOrder', function(req, res) {
+  User.findOne({
+    _id: req.user._id
+  }).then(function(user) {
+    return user.update(req.body, {runValidators: true});
+  }).then(function() {
+    res.end();
+  }, function(err) {
+    sendAppError(res, err);
+  });
+});
+
 showJsonApi.post('/update/:id', function(req, res) {
   Show.findOne({
       _id: req.params.id,
       user: req.user._id
     })
     .exec().then(function(show) {
-      console.log(show);
-
       if (!show) throw validationError({
         message: 'The given id did not match any records'
       });

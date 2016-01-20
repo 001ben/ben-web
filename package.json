@@ -31,9 +31,9 @@
     "test": "protractor ./tests/e2e/protractor.conf.js --suite full",
     "exp": "protractor ./tests/e2e/protractor.conf.js --suite experiment ; true",
     "testsuite": "protractor ./tests/e2e/protractor.conf.js --suite ",
-    "winmorning": "start \"Database\" cmd /C \"mongod\" && start \"Server\" cmd /C \"node .\\server-app\\app.js\"",
-    "wintest": "start \"Selenium\" cmd /C \"webdriver-manager start\" && start \"Test Server\" cmd /C \"node .\\server-app\\test-app.js\"",
-    "windev": "start \"Dev Watch\" cmd /C \"gulp\" && start \"Karma\" cmd /C \"karma start",
+    "winmorning": "start \"Database\" cmd /C \"mongod\" && start \"Server\" cmd /K \"node .\\server-app\\app.js\"",
+    "wintest": "start \"Selenium\" cmd /C \"webdriver-manager start\" && start \"Test Server\" cmd /K \"node .\\server-app\\test-app.js\"",
+    "windev": "start \"Dev Watch\" cmd /C \"gulp\" && start \"Karma\" cmd /C \"karma start\"",
     "spawn": "start \"A Process\""
   },
   "dependencies": {
