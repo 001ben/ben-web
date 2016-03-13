@@ -26,6 +26,7 @@
     "request-promise": "^0.4.2"
   },
   "scripts": {
+    "setup": "webdriver-manager update --standalone",
     "prestart": "npm update --production",
     "start": "node server-app/app.js",
     "test": "protractor ./tests/e2e/protractor.conf.js --suite full",

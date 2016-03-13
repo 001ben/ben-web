@@ -4,7 +4,7 @@
 	"watched": false,
 	"episodes": 35,
 	"filmType": "episodes",
-	"modified":"2016-01-20T04:47:45.718Z"
+	"modified":"2016-01-20T04:44:45.718Z"
 }, {
 	"_id": 2,
 	"name": "Test Show 2",
@@ -12,11 +12,11 @@
 	"season": 4,
 	"seasonEpisodes": 12,
 	"filmType": "seasons",
-	"modified":"2016-01-20T04:47:34.259Z"
+	"modified":"2016-01-20T04:43:34.259Z"
 }, {
 	"_id": 3,
 	"name": "Test Show 3",
 	"watched": true,
 	"filmType": "movie",
-	"modified":"2016-01-20T04:48:29.595Z"
+	"modified":"2016-01-20T04:42:29.595Z"
 }]

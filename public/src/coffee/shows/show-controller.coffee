@@ -1,4 +1,4 @@
-ShowController = (showData, debouncer, showType, iconSelectorService, $mdSidenav, $log, $q) ->
+ShowController = (showData, debouncer, showType, iconSelectorService, $mdSidenav, $log, $q, orderByFilter) ->
 	self = this
 
 	# Variables
@@ -31,7 +31,9 @@ ShowController = (showData, debouncer, showType, iconSelectorService, $mdSidenav
 
 		self.shows = [].concat(shows)
 		if shows.length > 0
-			self.selected = shows[0]
+			self.shows = orderByFilter self.shows, self.orderBy, !self.ascending
+			self.selected = self.shows[0]
+
 		else
 			s = {}
 			self.shows.unshift s
@@ -157,4 +159,4 @@ ShowController = (showData, debouncer, showType, iconSelectorService, $mdSidenav
 	return
 
 angular.module 'shows'
-	.controller 'showController', ['showData', 'debouncer', 'showType', 'iconSelectorService', '$mdSidenav', '$log', '$q', ShowController]
+	.controller 'showController', ['showData', 'debouncer', 'showType', 'iconSelectorService', '$mdSidenav', '$log', '$q', 'orderByFilter', ShowController]
