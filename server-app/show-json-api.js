@@ -10,7 +10,7 @@ var objectId = mongoose.Types.ObjectId;
 var showJsonApi = express.Router();
 
 /* connection details */
-var mongoUrl = 'mongodb://localhost:27017/';
+var mongoUrl = 'mongodb://' + (process.argv[4] ? 'localhost') + ':27017/';
 var dbName = 'shows';
 
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));

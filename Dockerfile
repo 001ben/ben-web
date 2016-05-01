@@ -6,4 +6,4 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 
 EXPOSE 80
-CMD ["node", "server-app/app.js"]
+CMD ["node", "server-app/app.js", "80", "watchlist.benjamentech.com", "mongodb"]
